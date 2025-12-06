@@ -1,0 +1,11 @@
+# 本地模型目录
+# 
+# 使用方法:
+# 1. 下载 ONNX 格式的 inpainting 模型（如 LaMa）
+# 2. 将模型文件放到此目录，命名为 lama_fp32.onnx
+# 3. 在 .env 中设置 AI_MODE=local
+#
+# 推荐模型下载地址:
+# - LaMa: https://huggingface.co/Carve/LaMa-ONNX/resolve/main/lama_fp32.onnx
+#
+# 注意: 模型文件较大，请勿提交到 Git

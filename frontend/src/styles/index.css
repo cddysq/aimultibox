@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 亮色主题变量 */
+:root {
+  --primary: #0ea5e9;
+  --primary-dark: #0284c7;
+  --secondary: #8b5cf6;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-border: #e2e8f0;
+  --muted: #64748b;
+  --muted-bg: #f1f5f9;
+}
+
+/* 暗色主题变量 */
+.dark {
+  --primary: #38bdf8;
+  --primary-dark: #0ea5e9;
+  --secondary: #a78bfa;
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-border: #334155;
+  --muted: #94a3b8;
+  --muted-bg: #1e293b;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* 拖拽区域样式 */
+.dropzone {
+  @apply border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer transition-all;
+  @apply bg-white dark:bg-slate-800;
+}
+
+.dropzone:hover {
+  @apply border-primary-400 dark:border-primary-500 bg-primary-50 dark:bg-primary-900/20;
+}
+
+.dropzone.active {
+  @apply border-primary-500 bg-primary-100 dark:bg-primary-900/30;
+}
+
+/* 加载动画 */
+.loading-spinner {
+  @apply animate-spin rounded-full border-4 border-gray-200 dark:border-gray-700;
+  border-top-color: var(--primary);
+}
+
+/* 工具卡片 */
+.tool-card {
+  @apply bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 p-6;
+  @apply hover:shadow-md transition-all cursor-pointer;
+}
+
+.tool-card:hover {
+  @apply border-primary-200 dark:border-primary-700;
+}
+
+/* 图片对比滑块 */
+.compare-slider {
+  position: relative;
+  overflow: hidden;
+  cursor: ew-resize;
+}
+
+.compare-slider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary);
+  left: var(--slider-position, 50%);
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.compare-slider .compare-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--slider-position, 50%);
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 上传进度条 */
+.upload-progress {
+  @apply h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+}
+
+.upload-progress-bar {
+  @apply h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-300;
+}
+
+/* 卡片样式 */
+.card {
+  @apply bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  @apply bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200;
+  @apply hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors;
+}

@@ -1,0 +1,143 @@
+{
+  "common": {
+    "retry": "Retry",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "clear": "Clear",
+    "download": "Download",
+    "upload": "Upload",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "success": "Success",
+    "error": "Error",
+    "view": "View",
+    "changeImage": "Change Image",
+    "back": "Back"
+  },
+  "home": {
+    "tagline": "AI Toolbox",
+    "title": "AIMultiBox",
+    "description": "Extensible AI toolbox platform",
+    "noTools": "No tools available",
+    "noToolsHint": "Make sure backend is running",
+    "features": {
+      "plugin": {
+        "title": "Plugin Architecture",
+        "desc": "Tools as plugins, infinitely extensible"
+      },
+      "deploy": {
+        "title": "Multiple Deploy",
+        "desc": "Online, local, or server deployment"
+      },
+      "model": {
+        "title": "Model Switching",
+        "desc": "Local LaMa or cloud SDXL"
+      }
+    }
+  },
+  "layout": {
+    "toolbox": "Toolbox",
+    "changelog": "Changelog",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "changelog": {
+    "title": "Changelog",
+    "subtitle": "Every step of our journey",
+    "latest": "Latest",
+    "beginning": "The story begins here...",
+    "types": {
+      "feature": "Feature",
+      "improve": "Improve",
+      "fix": "Fix"
+    },
+    "v001": {
+      "title": "🎉 First Release",
+      "feature1": "AI Watermark Removal: Manual marking and auto detection modes",
+      "feature2": "Local LaMa model inference, works offline",
+      "feature3": "Cloud SDXL Inpainting support (optional)",
+      "feature4": "Dark mode + Bilingual (zh/en) support",
+      "feature5": "Processing history with before/after comparison"
+    }
+  },
+  "watermark": {
+    "title": "AI Watermark Removal",
+    "subtitle": "Using LaMa model locally",
+    "subtitleCloud": "Using SDXL Inpainting cloud",
+    "modelReady": "Model ready",
+    "modelNotLoaded": "Model not loaded",
+    "lamaLocal": "LaMa Local",
+    "sdxlCloud": "SDXL Cloud",
+    "modes": {
+      "manual": "Manual",
+      "manualShort": "Manual",
+      "auto": "Auto Detect",
+      "autoShort": "Auto"
+    },
+    "markArea": "Mark watermark area",
+    "clickToChange": "Click to change",
+    "changeImage": "Change image",
+    "reselect": "Reselect",
+    "removeWatermark": "Remove Watermark",
+    "result": "Result",
+    "resultPlaceholder": "Processed image will appear here",
+    "successMsg": "Watermark removed!",
+    "continueProcess": "Continue",
+    "downloadImage": "Download",
+    "upload": {
+      "hint": "Drag image here or click to upload",
+      "formats": "Supports JPG, PNG, WebP"
+    },
+    "canvas": {
+      "brush": "Brush",
+      "eraser": "Eraser",
+      "clear": "Clear",
+      "hint": "Paint watermark area, more accurate = better result"
+    },
+    "warnings": {
+      "lamaNotLoaded": "LaMa model not loaded",
+      "lamaDownloadHint": "Please download model to",
+      "sdxlNotConfigured": "SDXL API not configured",
+      "sdxlConfigHint": "Set REPLICATE_API_TOKEN in backend/.env",
+      "needMask": "Please paint watermark area first",
+      "autoDetectNote": "Auto detection has limited accuracy, manual marking recommended"
+    },
+    "reuseHint": "Image found in other mode, reuse it?",
+    "reuseYes": "Reuse",
+    "reuseNo": "No",
+    "syncHint": "Image updated in other mode, sync it?",
+    "syncYes": "Sync",
+    "syncNo": "Keep",
+    "guide": {
+      "title": "Guide",
+      "step1": "Upload the image",
+      "step2": "Recommended: Use \"Manual\" mode, paint watermark area",
+      "step3": "More accurate painting = better result",
+      "step4": "Click \"Remove Watermark\" to process",
+      "step5": "Drag slider to compare before/after"
+    }
+  },
+  "history": {
+    "title": "History",
+    "clear": "Clear",
+    "maxHint": "Max {{max}} items",
+    "original": "Ori",
+    "result": "Res",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago"
+  },
+  "errors": {
+    "loadToolsFailed": "Failed to load tools",
+    "invalidImage": "Please select a valid image",
+    "processingFailed": "Processing failed, check backend",
+    "rateLimited": "Too many requests, please wait",
+    "rateLimitWait": "Retry in {{seconds}}s"
+  }
+}
+
