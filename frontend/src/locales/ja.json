@@ -1,0 +1,326 @@
+{
+  "tools": {
+    "currency-manager": {
+      "name": "為替マネージャー",
+      "description": "レート監視、取引記録、損益分析、アラート"
+    },
+    "watermark-removal": {
+      "name": "AI ウォーターマーク除去",
+      "description": "LaMa/SDXL モデルでウォーターマークを除去"
+    }
+  },
+  "currencies": {
+    "JPY_CNY": "JPY/CNY",
+    "USD_CNY": "USD/CNY",
+    "EUR_CNY": "EUR/CNY",
+    "GBP_CNY": "GBP/CNY",
+    "HKD_CNY": "HKD/CNY",
+    "AUD_CNY": "AUD/CNY",
+    "CAD_CNY": "CAD/CNY",
+    "SGD_CNY": "SGD/CNY",
+    "CHF_CNY": "CHF/CNY",
+    "NZD_CNY": "NZD/CNY"
+  },
+  "langSuggestion": {
+    "detected": "現在地は{{country}}です",
+    "switchHint": "より良い体験のため{{lang}}に切り替えますか？",
+    "switchTo": "{{lang}}に切替",
+    "keepCurrent": "現在のまま",
+    "langs": { "zh": "中国語", "en": "英語", "ja": "日本語" },
+    "langShort": { "zh": "中", "en": "EN", "ja": "日" },
+    "countries": {
+      "CN": "中国", "TW": "台湾", "HK": "香港", "MO": "マカオ", "SG": "シンガポール",
+      "JP": "日本", "KR": "韓国", "US": "アメリカ", "GB": "イギリス", "AU": "オーストラリア",
+      "CA": "カナダ", "NZ": "ニュージーランド", "DE": "ドイツ", "FR": "フランス", "IT": "イタリア"
+    }
+  },
+  "common": {
+    "close": "閉じる",
+    "retry": "再試行",
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "clear": "クリア",
+    "download": "ダウンロード",
+    "upload": "アップロード",
+    "loading": "読み込み中...",
+    "processing": "処理中...",
+    "success": "成功",
+    "error": "エラー",
+    "view": "表示",
+    "changeImage": "画像を変更",
+    "back": "戻る",
+    "optional": "任意"
+  },
+  "home": {
+    "tagline": "AI ツールボックス",
+    "title": "AIMultiBox",
+    "description": "拡張可能な AI ツールボックス",
+    "noTools": "利用可能なツールがありません",
+    "noToolsHint": "バックエンドが起動していることを確認してください",
+    "features": {
+      "plugin": {
+        "title": "プラグイン設計",
+        "desc": "ツールをプラグインとして無限に拡張"
+      },
+      "deploy": {
+        "title": "複数のデプロイ方法",
+        "desc": "オンライン、ローカル、サーバー対応"
+      },
+      "model": {
+        "title": "モデル切り替え",
+        "desc": "ローカル LaMa またはクラウド SDXL"
+      }
+    }
+  },
+  "layout": {
+    "toolbox": "ツールボックス",
+    "changelog": "更新履歴",
+    "theme": {
+      "light": "ライト",
+      "dark": "ダーク",
+      "system": "システム"
+    }
+  },
+  "changelog": {
+    "title": "更新履歴",
+    "subtitle": "成長の軌跡",
+    "latest": "最新",
+    "beginning": "ここから始まる...",
+    "types": {
+      "feature": "新機能",
+      "improve": "改善",
+      "fix": "修正"
+    },
+    "v001": {
+      "title": "🎉 初回リリース",
+      "feature1": "AI ウォーターマーク除去：手動マーキングと自動検出モード",
+      "feature2": "ローカル LaMa モデル推論、オフラインで動作",
+      "feature3": "クラウド SDXL Inpainting サポート（オプション）",
+      "feature4": "ダークモード + 多言語対応",
+      "feature5": "処理履歴とビフォー/アフター比較"
+    },
+    "v002": {
+      "title": "💱 為替マネージャーリリース",
+      "feature1": "💰 為替マネージャー：JPY/USD/EUR など10通貨のリアルタイム監視",
+      "feature2": "📊 取引記録の可視化チャート、スマートな損益計算",
+      "feature3": "🔔 レートアラート：目標レート到達時に通知",
+      "feature4": "🧮 通貨計算機：通貨間の即時換算",
+      "improve1": "⚡ アーキテクチャ全面アップグレード、より高速でスムーズ",
+      "improve2": "🛠️ コードリファクタリング、安定性向上"
+    }
+  },
+  "watermark": {
+    "title": "AI ウォーターマーク除去",
+    "subtitle": "LaMa モデルをローカルで使用",
+    "subtitleCloud": "SDXL Inpainting をクラウドで使用",
+    "modelReady": "モデル準備完了",
+    "modelNotLoaded": "モデル未読込",
+    "lamaLocal": "LaMa ローカル",
+    "sdxlCloud": "SDXL クラウド",
+    "modes": {
+      "manual": "手動",
+      "manualShort": "手動",
+      "auto": "自動検出",
+      "autoShort": "自動"
+    },
+    "markArea": "ウォーターマーク領域をマーク",
+    "clickToChange": "クリックで変更",
+    "changeImage": "画像を変更",
+    "reselect": "再選択",
+    "removeWatermark": "ウォーターマーク除去",
+    "result": "結果",
+    "resultPlaceholder": "処理後の画像がここに表示されます",
+    "successMsg": "ウォーターマーク除去完了！",
+    "continueProcess": "続行",
+    "downloadImage": "ダウンロード",
+    "upload": {
+      "hint": "画像をドラッグまたはクリックしてアップロード",
+      "formats": "JPG、PNG、WebP 対応"
+    },
+    "canvas": {
+      "brush": "ブラシ",
+      "eraser": "消しゴム",
+      "clear": "クリア",
+      "hint": "ウォーターマークの領域を塗りつぶしてください。精度が高いほど結果が良くなります。"
+    },
+    "warnings": {
+      "lamaNotLoaded": "LaMa モデル未読込",
+      "lamaDownloadHint": "モデルをダウンロードしてください",
+      "sdxlNotConfigured": "SDXL API 未設定",
+      "sdxlConfigHint": "backend/.env に REPLICATE_API_TOKEN を設定",
+      "needMask": "先にウォーターマーク領域を塗ってください",
+      "autoDetectNote": "自動検出の精度には限界があります、手動マーキング推奨"
+    },
+    "reuseHint": "他のモードに画像があります、再利用しますか？",
+    "reuseYes": "再利用",
+    "reuseNo": "いいえ",
+    "syncHint": "他のモードで画像が更新されました、同期しますか？",
+    "syncYes": "同期",
+    "syncNo": "保持",
+    "guide": {
+      "title": "ガイド",
+      "step1": "画像をアップロード",
+      "step2": "推奨：「手動」モードでウォーターマーク領域を塗る",
+      "step3": "正確に塗るほど良い結果",
+      "step4": "「ウォーターマーク除去」をクリックして処理",
+      "step5": "スライダーでビフォー/アフターを比較"
+    }
+  },
+  "history": {
+    "title": "履歴",
+    "clear": "クリア",
+    "maxHint": "最大 {{max}} 件",
+    "original": "元画像",
+    "result": "結果",
+    "justNow": "たった今",
+    "minutesAgo": "{{count}}分前",
+    "hoursAgo": "{{count}}時間前"
+  },
+  "errors": {
+    "loadToolsFailed": "ツール読込失敗",
+    "invalidImage": "有効な画像を選択してください",
+    "processingFailed": "処理失敗、バックエンドを確認",
+    "rateLimited": "リクエストが多すぎます、お待ちください",
+    "rateLimitWait": "{{seconds}}秒後に再試行"
+  },
+  "notFound": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは削除されたか、一時的に利用できません",
+    "back": "戻る",
+    "home": "ホーム",
+    "visitPath": "パス",
+    "orVisit": "または",
+    "feedback": "問題を報告"
+  },
+  "serviceError": {
+    "title": "サービス利用不可",
+    "description": "メンテナンス中です。後ほどお試しください",
+    "retry": "再試行",
+    "waited": "経過時間",
+    "easterEgg": "イースターエッグ解除！秘密を見つけました！",
+    "duration": {
+      "days": "日",
+      "hours": "時間",
+      "minutes": "分",
+      "seconds": "秒"
+    },
+    "milestone": {
+      "1min": "休憩しましょう",
+      "5min": "退屈？↑↑↓↓←→←→BA を試して",
+      "10min": "お待たせしました",
+      "30min": "お茶でも",
+      "1hour": "他のことをしませんか？",
+      "6hour": "とても忍耐強いですね",
+      "12hour": "継続は力なり",
+      "24hour": "伝説の待機者！"
+    }
+  },
+  "currency": {
+    "title": "為替マネージャー",
+    "subtitle": "レート監視と損益分析",
+    "refresh": "更新",
+    "selectCurrency": "通貨",
+    "days": "日",
+    "settings": "設定",
+    "refreshSettings": "更新設定",
+    "autoRefresh": "自動更新",
+    "refreshInterval": "間隔",
+    "lastUpdate": "最終更新",
+    "rate": "レート",
+    "midRate": "仲値",
+    "rtbBid": "電信買",
+    "rthBid": "現金買",
+    "rtcOfr": "電信売",
+    "rthOfr": "現金売",
+    "sellForeignTitle": "外貨売却（銀行に売る）",
+    "buyForeignTitle": "外貨購入（銀行から買う）",
+    "high": "高値",
+    "low": "安値",
+    "average": "平均",
+    "streak": {
+      "rising": "{{days}}日連続上昇",
+      "falling": "{{days}}日連続下落",
+      "cumulative": "合計"
+    },
+    "noData": "データなし",
+    "noTrades": "取引記録なし",
+    "noProfitData": "取引を追加して損益を確認",
+    "totalRecords": "{{count}}件",
+    "buy": "買い",
+    "sell": "売り",
+    "amount": "金額",
+    "note": "メモ",
+    "addTrade": "取引追加",
+    "tradeHistory": "取引履歴",
+    "confirmDelete": "この取引を削除しますか？",
+    "costPreview": "コストプレビュー",
+    "clickToAddTrade": "チャートをクリックして取引追加",
+    "profitSummary": "損益サマリー",
+    "totalCost": "総コスト",
+    "currentValue": "現在価値",
+    "profitLoss": "損益",
+    "returnRate": "収益率",
+    "holdingAmount": "保有量",
+    "avgCostRate": "平均コスト",
+    "errors": {
+      "requiredFields": "金額とレートが必要",
+      "invalidAmount": "無効な金額",
+      "invalidRate": "無効なレート",
+      "createFailed": "作成失敗"
+    },
+    "guide": {
+      "title": "ガイド",
+      "step1": "通貨ペアを選択、データは招商銀行のリアルタイムレート",
+      "step2": "7/30/90日のトレンドを表示、自動更新を有効化",
+      "step3": "チャートまたは「取引追加」をクリックして記録、損益自動計算",
+      "step4": "レートアラートを設定、目標到達時にブラウザ通知"
+    },
+    "alerts": {
+      "title": "レートアラート",
+      "noAlerts": "アラートルールなし",
+      "confirmDelete": "このアラートを削除しますか？",
+      "invalidThreshold": "有効なしきい値を入力してください",
+      "rateAbove": "レートが {{value}} 以上",
+      "rateBelow": "レートが {{value}} 以下",
+      "changeAbove": "日次変動 > {{value}}%",
+      "currentRateHint": "現在のレート：{{rate}}",
+      "ratePlaceholder": "目標レート",
+      "percentPlaceholder": "パーセント（例：5）",
+      "hint": "レート更新時にアラート条件を確認します",
+      "conditions": {
+        "rate_above": "レートが上回る",
+        "rate_below": "レートが下回る",
+        "daily_change_above": "日次変動 >"
+      }
+    },
+    "export": {
+      "csv": "CSV エクスポート",
+      "noData": "エクスポートするデータなし"
+    },
+    "calculator": {
+      "title": "計算機",
+      "from": "金額",
+      "to": "換算先",
+      "swap": "入れ替え",
+      "midRateHint": "仲値で計算します。実際のレートは異なる場合があります"
+    },
+    "notification": {
+      "enable": "アラート通知",
+      "enabled": "有効",
+      "request": "有効にする",
+      "notSupported": "ブラウザが通知をサポートしていません",
+      "alertTitle": "レートアラート",
+      "currentRate": "現在のレート"
+    },
+    "intervals": {
+      "1min": "1分",
+      "3min": "3分",
+      "5min": "5分",
+      "10min": "10分",
+      "15min": "15分",
+      "30min": "30分"
+    }
+  }
+}

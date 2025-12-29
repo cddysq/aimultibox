@@ -1,70 +1,65 @@
-# 架构设计
+# 架构说明
 
 [English](./ARCHITECTURE_EN.md)
 
-## 项目结构
-
-```
-aimultibox/
-├── frontend/         # React + Tailwind + Vite
-├── backend/          # FastAPI
-│   └── models/       # 模型文件
-└── docs/             # 文档
-```
-
 ## 技术栈
 
-### 前端
-- React 18 + Vite + TypeScript
-- TailwindCSS
-- Zustand（状态管理）
-- react-i18next（国际化）
-- Axios
+**前端**: React 19 + Vite 6 + TypeScript 5.7 + Tailwind CSS 4 + Zustand
 
-### 后端
-- FastAPI + Uvicorn
-- Pydantic v2
-- OpenCV + Pillow
-- OnnxRuntime
+**后端**: FastAPI + Pydantic v2 + OnnxRuntime
 
-## 插件系统
+## 目录结构
 
-每个工具目录结构：
 ```
-backend/aimultibox/tools/<tool_name>/
-├── __init__.py     # 工具元信息
-├── api.py          # 路由
-├── service.py      # 业务逻辑
-├── model.py        # AI 模型
-└── schemas.py      # 数据模型
+frontend/src/
+├── api/          # API 封装
+├── components/   # 公共组件
+├── stores/       # Zustand 状态
+├── tools/        # 工具页面
+└── types/        # 类型定义
+
+backend/aimultibox/
+├── core/         # 配置、中间件、插件加载
+├── models/       # 公共数据模型
+└── tools/        # 工具插件
 ```
 
-### 加载流程
-1. `ToolLoader` 扫描 `tools/` 目录
-2. 导入包含 `api.py` 的模块
-3. 注册路由
-4. 就绪
+## 插件结构
 
-## 模型层
+每个工具是独立的插件，放在 `tools/` 目录下：
 
-| 模式 | 引擎 | 来源 |
-|------|------|------|
-| local | LaMa ONNX | 本地推理 (onnxruntime) |
-| cloud | SDXL | Replicate API |
+```
+tools/<tool_name>/
+├── __init__.py   # TOOL_META 元信息
+├── api.py        # 路由（导出 router）
+├── service.py    # 业务逻辑
+└── schemas.py    # Pydantic 模型
+```
 
-模型下载：https://huggingface.co/Carve/LaMa-ONNX/resolve/main/lama_fp32.onnx
+### 工具元信息
 
-> 推荐使用 `lama_fp32.onnx`，输入固定 512x512，支持 TensorRT
-> 来源：[Carve/LaMa-ONNX](https://huggingface.co/Carve/LaMa-ONNX)
+```python
+# __init__.py
+TOOL_META = {
+    "id": "tool-slug",        # API 路径
+    "name": "工具名称",
+    "description": "描述",
+    "icon": "lucide-icon",    # 图标名
+    "version": "0.0.1"
+}
+```
+
+启动时 `ToolLoader` 自动扫描并注册到 `/api/tools/{id}/`。
+
+## 核心模块
+
+- `core/config.py` - 配置管理（从 .env 加载）
+- `core/loader.py` - 插件加载器
+- `core/middleware.py` - 请求日志、错误处理
+- `core/ratelimit.py` - 限流
 
 ## 部署
 
-开发环境:
-```
-Frontend (5173) → Backend (8000)
-```
+**开发**: Vite 代理 `/api` 到后端
 
-生产环境:
-```
-静态托管 → API 网关 → FastAPI (Docker)
-```
+**生产**: 静态托管 + Docker

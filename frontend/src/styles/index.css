@@ -1,33 +1,57 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/**
+ * Tailwind CSS 4 暗色模式
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 自定义主题配置 */
+@theme {
+  /* 主色调 */
+  --color-primary-50: oklch(0.97 0.02 205);
+  --color-primary-100: oklch(0.94 0.04 205);
+  --color-primary-200: oklch(0.88 0.08 205);
+  --color-primary-300: oklch(0.79 0.13 205);
+  --color-primary-400: oklch(0.68 0.17 205);
+  --color-primary-500: oklch(0.59 0.19 205);
+  --color-primary-600: oklch(0.51 0.18 205);
+  --color-primary-700: oklch(0.44 0.16 205);
+  --color-primary-800: oklch(0.38 0.13 205);
+  --color-primary-900: oklch(0.33 0.10 205);
+  --color-primary-950: oklch(0.24 0.07 205);
+
+  /* 动画 */
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
 /* 亮色主题变量 */
 :root {
-  --primary: #0ea5e9;
-  --primary-dark: #0284c7;
-  --secondary: #8b5cf6;
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-border: #e2e8f0;
-  --muted: #64748b;
-  --muted-bg: #f1f5f9;
+  --primary: oklch(0.59 0.19 205);
+  --primary-dark: oklch(0.51 0.18 205);
+  --secondary: oklch(0.58 0.22 280);
+  --background: oklch(0.98 0.01 250);
+  --foreground: oklch(0.15 0.02 250);
+  --card: oklch(1 0 0);
+  --card-border: oklch(0.91 0.01 250);
+  --muted: oklch(0.55 0.02 250);
+  --muted-bg: oklch(0.96 0.01 250);
 }
 
 /* 暗色主题变量 */
 .dark {
-  --primary: #38bdf8;
-  --primary-dark: #0ea5e9;
-  --secondary: #a78bfa;
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --card: #1e293b;
-  --card-border: #334155;
-  --muted: #94a3b8;
-  --muted-bg: #1e293b;
+  --primary: oklch(0.68 0.17 205);
+  --primary-dark: oklch(0.59 0.19 205);
+  --secondary: oklch(0.72 0.18 280);
+  --background: oklch(0.15 0.02 250);
+  --foreground: oklch(0.96 0.01 250);
+  --card: oklch(0.23 0.02 250);
+  --card-border: oklch(0.32 0.02 250);
+  --muted: oklch(0.70 0.02 250);
+  --muted-bg: oklch(0.23 0.02 250);
 }
 
+/* 基础样式 */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--background);
@@ -47,50 +71,78 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: oklch(0.82 0.01 250);
   border-radius: 4px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: oklch(0.40 0.02 250);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: oklch(0.70 0.02 250);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: oklch(0.50 0.02 250);
 }
 
 /* 拖拽区域样式 */
-.dropzone {
-  @apply border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer transition-all;
-  @apply bg-white dark:bg-slate-800;
-}
+@layer components {
+  .dropzone {
+    @apply border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer transition-all;
+    @apply bg-white dark:bg-slate-800;
+  }
 
-.dropzone:hover {
-  @apply border-primary-400 dark:border-primary-500 bg-primary-50 dark:bg-primary-900/20;
-}
+  .dropzone:hover {
+    @apply border-primary-400 dark:border-primary-500 bg-primary-50 dark:bg-primary-900/20;
+  }
 
-.dropzone.active {
-  @apply border-primary-500 bg-primary-100 dark:bg-primary-900/30;
-}
+  .dropzone.active {
+    @apply border-primary-500 bg-primary-100 dark:bg-primary-900/30;
+  }
 
-/* 加载动画 */
-.loading-spinner {
-  @apply animate-spin rounded-full border-4 border-gray-200 dark:border-gray-700;
-  border-top-color: var(--primary);
-}
+  /* 加载动画 */
+  .loading-spinner {
+    @apply animate-spin rounded-full border-4 border-gray-200 dark:border-gray-700;
+    border-top-color: var(--primary);
+  }
 
-/* 工具卡片 */
-.tool-card {
-  @apply bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 p-6;
-  @apply hover:shadow-md transition-all cursor-pointer;
-}
+  /* 工具卡片 */
+  .tool-card {
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-xs border border-gray-100 dark:border-slate-700 p-6;
+    @apply hover:shadow-md transition-all cursor-pointer;
+    @apply h-full;
+  }
 
-.tool-card:hover {
-  @apply border-primary-200 dark:border-primary-700;
+  .tool-card:hover {
+    @apply border-primary-200 dark:border-primary-700;
+  }
+
+  /* 上传进度条 */
+  .upload-progress {
+    @apply h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+  }
+
+  .upload-progress-bar {
+    @apply h-full bg-linear-to-r from-primary-500 to-primary-400 transition-all duration-300;
+  }
+
+  /* 卡片样式 */
+  .card {
+    @apply bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700;
+  }
+
+  /* 按钮样式 */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200;
+    @apply hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors;
+  }
 }
 
 /* 图片对比滑块 */
@@ -127,29 +179,4 @@ body {
   color: white;
   z-index: 20;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* 上传进度条 */
-.upload-progress {
-  @apply h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
-}
-
-.upload-progress-bar {
-  @apply h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-300;
-}
-
-/* 卡片样式 */
-.card {
-  @apply bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700;
-}
-
-/* 按钮样式 */
-.btn-primary {
-  @apply bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors;
-  @apply disabled:opacity-50 disabled:cursor-not-allowed;
-}
-
-.btn-secondary {
-  @apply border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200;
-  @apply hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors;
 }

@@ -3,7 +3,8 @@
  * 使用 IndexedDB 存储，支持大容量图片数据
  */
 import { create } from 'zustand'
-import { persist, createJSONStorage, StateStorage } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import type { StateStorage } from 'zustand/middleware'
 import { get as idbGet, set as idbSet, del as idbDel } from 'idb-keyval'
 
 /** 历史记录项 */

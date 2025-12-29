@@ -2,69 +2,64 @@
 
 [中文](./ARCHITECTURE.md)
 
-## Structure
-
-```
-aimultibox/
-├── frontend/         # React + Tailwind + Vite
-├── backend/          # FastAPI
-│   └── models/       # Model files
-└── docs/             # Documentation
-```
-
 ## Tech Stack
 
-### Frontend
-- React 18 + Vite + TypeScript
-- TailwindCSS
-- Zustand (state)
-- react-i18next (i18n)
-- Axios
+**Frontend**: React 19 + Vite 6 + TypeScript 5.7 + Tailwind CSS 4 + Zustand
 
-### Backend
-- FastAPI + Uvicorn
-- Pydantic v2
-- OpenCV + Pillow
-- OnnxRuntime
+**Backend**: FastAPI + Pydantic v2 + OnnxRuntime
 
-## Plugin System
+## Directory Structure
 
-Tool directory structure:
 ```
-backend/aimultibox/tools/<tool_name>/
-├── __init__.py     # Meta info
-├── api.py          # Routes
-├── service.py      # Business logic
-├── model.py        # AI model
-└── schemas.py      # Data models
+frontend/src/
+├── api/          # API wrappers
+├── components/   # Shared components
+├── stores/       # Zustand state
+├── tools/        # Tool pages
+└── types/        # Type definitions
+
+backend/aimultibox/
+├── core/         # Config, middleware, plugin loader
+├── models/       # Shared data models
+└── tools/        # Tool plugins
 ```
 
-### Load Flow
-1. `ToolLoader` scans `tools/`
-2. Import modules with `api.py`
-3. Register routes
-4. Ready
+## Plugin Structure
 
-## Model Layer
+Each tool is an independent plugin in the `tools/` directory:
 
-| Mode | Engine | Source |
-|------|--------|--------|
-| local | LaMa ONNX | Local inference (onnxruntime) |
-| cloud | SDXL | Replicate API |
-
-Model download: https://huggingface.co/Carve/LaMa-ONNX/resolve/main/lama_fp32.onnx
-
-> Recommend `lama_fp32.onnx`, fixed input 512x512, TensorRT compatible
-> Source: [Carve/LaMa-ONNX](https://huggingface.co/Carve/LaMa-ONNX)
-
-## Deploy
-
-Dev:
 ```
-Frontend (5173) → Backend (8000)
+tools/<tool_name>/
+├── __init__.py   # TOOL_META metadata
+├── api.py        # Routes (exports router)
+├── service.py    # Business logic
+└── schemas.py    # Pydantic models
 ```
 
-Prod:
+### Tool Metadata
+
+```python
+# __init__.py
+TOOL_META = {
+    "id": "tool-slug",        # API path
+    "name": "Tool Name",
+    "description": "Description",
+    "icon": "lucide-icon",    # Icon name
+    "version": "0.0.1"
+}
 ```
-Static Host → API Gateway → FastAPI (Docker)
-```
+
+On startup, `ToolLoader` scans and registers tools to `/api/tools/{id}/`.
+
+## Core Modules
+
+- `core/config.py` - Config management (loads from .env)
+- `core/loader.py` - Plugin loader
+- `core/middleware.py` - Request logging, error handling
+- `core/ratelimit.py` - Rate limiting
+
+## Deployment
+
+**Development**: Vite proxies `/api` to backend
+
+**Production**: Static hosting + Docker

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """工具加载器"""
 
+import logging
 import importlib
 from pathlib import Path
 from typing import Dict, Any, List
 from fastapi import FastAPI
+
+logger = logging.getLogger("aimultibox")
 
 
 class ToolLoader:
@@ -18,7 +21,7 @@ class ToolLoader:
             cls._instance = super().__new__(cls)
         return cls._instance
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.tools_path = Path(__file__).parent.parent / "tools"
     
     @classmethod
@@ -48,7 +51,7 @@ class ToolLoader:
             init_module = importlib.import_module(f"aimultibox.tools.{tool_name}")
             
             if not hasattr(init_module, "TOOL_META"):
-                print(f"  ✗ {tool_name}: 缺少 TOOL_META")
+                logger.warning(f"工具 {tool_name} 缺少 TOOL_META")
                 return False
             
             meta = init_module.TOOL_META
@@ -57,10 +60,11 @@ class ToolLoader:
             api_module = importlib.import_module(f"aimultibox.tools.{tool_name}.api")
             
             if not hasattr(api_module, "router"):
-                print(f"  ✗ {tool_name}: 缺少 router")
+                logger.warning(f"工具 {tool_name} 缺少 router")
                 return False
             
-            prefix = f"/api/tools/{tool_id}"
+            from aimultibox.core.config import settings
+            prefix = f"{settings.api_prefix}/tools/{tool_id}"
             app.include_router(api_module.router, prefix=prefix, tags=[tool_name])
             
             ToolLoader._tools[tool_name] = {
@@ -70,17 +74,17 @@ class ToolLoader:
                 "module": api_module,
             }
             
-            print(f"  ✓ {meta.get('name', tool_name)} -> {prefix}")
+            logger.info(f"加载工具: {meta.get('name', tool_name)} -> {prefix}")
             return True
                 
         except Exception as e:
-            print(f"  ✗ {tool_name}: {e}")
+            logger.error(f"加载工具 {tool_name} 失败: {e}")
             return False
     
     def load_all_tools(self, app: FastAPI) -> None:
         """加载所有工具"""
         tools = self.discover_tools()
-        print(f"📦 发现 {len(tools)} 个工具")
+        logger.info(f"发现 {len(tools)} 个工具")
         
         for tool_name in tools:
             self.load_tool(tool_name, app)

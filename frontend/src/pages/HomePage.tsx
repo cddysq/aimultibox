@@ -2,10 +2,11 @@
  * 首页 - 工具列表
  */
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Eraser, Sparkles, Image, Loader2, AlertCircle, Wand2, FileImage, Scissors, Type } from 'lucide-react'
+import { Link } from 'react-router'
+import { Eraser, Sparkles, Image, Loader2, AlertCircle, Wand2, FileImage, Scissors, Type, TrendingUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useToolsStore, Tool } from '@/stores'
+import { useToolsStore } from '@/stores'
+import type { Tool } from '@/stores'
 
 /** 工具图标映射 */
 const iconMap: Record<string, React.ReactNode> = {
@@ -15,6 +16,7 @@ const iconMap: Record<string, React.ReactNode> = {
   'file-image': <FileImage className="w-8 h-8" />,
   scissors: <Scissors className="w-8 h-8" />,
   type: <Type className="w-8 h-8" />,
+  'trending-up': <TrendingUp className="w-8 h-8" />,
   default: <Wand2 className="w-8 h-8" />,
 }
 
@@ -54,7 +56,7 @@ export default function HomePage() {
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center space-x-3">
           <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
           <p className="text-red-700 dark:text-red-400">{t('errors.loadToolsFailed')}</p>
-          <button 
+          <button
             onClick={fetchTools}
             className="ml-auto text-red-600 dark:text-red-400 hover:underline text-sm"
           >
@@ -83,15 +85,15 @@ export default function HomePage() {
 
       {/* 特性介绍 */}
       <div className="mt-auto pt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <FeatureCard 
+        <FeatureCard
           title={t('home.features.plugin.title')}
           description={t('home.features.plugin.desc')}
         />
-        <FeatureCard 
+        <FeatureCard
           title={t('home.features.deploy.title')}
           description={t('home.features.deploy.desc')}
         />
-        <FeatureCard 
+        <FeatureCard
           title={t('home.features.model.title')}
           description={t('home.features.model.desc')}
         />
@@ -102,9 +104,13 @@ export default function HomePage() {
 
 /** 工具卡片 */
 function ToolCard({ tool }: { tool: Tool }) {
-  const icon = iconMap[tool.icon] || iconMap.default
+  const { t, i18n } = useTranslation()
+  const icon = (tool.icon && iconMap[tool.icon]) || iconMap.default
   const toolPath = `/tools/${tool.id}`
 
+  const isZh = i18n.language === 'zh'
+  const name = isZh ? tool.name : t(`tools.${tool.id}.name`, { defaultValue: tool.name })
+  const description = isZh ? tool.description : t(`tools.${tool.id}.description`, { defaultValue: tool.description })
   return (
     <Link to={toolPath}>
       <div className="tool-card group">
@@ -115,14 +121,14 @@ function ToolCard({ tool }: { tool: Tool }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center space-x-2">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
-                {tool.name}
+                {name}
               </h3>
               {tool.status === 'active' && (
                 <span className="flex-shrink-0 w-2 h-2 bg-green-500 rounded-full" />
               )}
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-2">
-              {tool.description}
+              {description}
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
               v{tool.version}

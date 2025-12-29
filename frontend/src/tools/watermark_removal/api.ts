@@ -1,7 +1,7 @@
 /**
  * 水印去除 API
  */
-import api from './index'
+import api from '@/api'
 
 /** 水印去除结果 */
 export interface WatermarkRemovalResult {

@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+.eggs/
+*.egg-info/
+*.egg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Test
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Environment
+.env
+.env.local
+*.bat
+
+# Models (will be mounted as volume)
+models/*.onnx
+
+# Data (will be mounted as volume)
+data/*.db
+
+# Docs
+*.md
+docs/
+
+# Misc
+*.log
+Dockerfile
+.dockerignore

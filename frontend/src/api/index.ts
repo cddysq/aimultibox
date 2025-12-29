@@ -1,33 +1,40 @@
-/**
- * API 客户端配置
- */
-import axios from 'axios'
+/** API 客户端 */
+import axios, { type AxiosError } from 'axios'
+import type { AppInfo, ToolsResponse, ErrorResponse } from '@/types'
+
+interface BackendConfig {
+  apiPrefix: string
+  version: string
+}
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 60000,
   headers: { 'Content-Type': 'application/json' },
 })
 
-// 响应拦截器
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    console.error('API 错误:', error)
+  (error: AxiosError<ErrorResponse>) => {
+    const message = error.response?.data?.error?.message || error.message
+    console.error('API 错误:', message)
     return Promise.reject(error)
   }
 )
 
-export default api
-
-/** 获取应用信息 */
-export async function getAppInfo() {
-  const response = await api.get('/app')
-  return response.data
+/** 初始化 API（从后端获取配置） */
+export async function initApi(): Promise<void> {
+  const { data } = await axios.get<BackendConfig>('/config')
+  api.defaults.baseURL = data.apiPrefix
 }
 
-/** 获取工具列表 */
-export async function getTools() {
-  const response = await api.get('/tools')
-  return response.data
+export default api
+
+export async function getAppInfo(): Promise<AppInfo> {
+  const { data } = await api.get<AppInfo>('/app')
+  return data
+}
+
+export async function getTools(): Promise<ToolsResponse> {
+  const { data } = await api.get<ToolsResponse>('/tools')
+  return data
 }

@@ -4,7 +4,8 @@
 import { useState } from 'react'
 import { History, Trash2, ChevronDown, ChevronUp, X, ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useHistoryStore, HistoryItem } from '@/stores'
+import { useHistoryStore } from '@/stores'
+import type { HistoryItem } from '@/stores'
 
 interface HistoryPanelProps {
   toolId: string

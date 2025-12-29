@@ -3,20 +3,10 @@
  */
 import { create } from 'zustand'
 import { getTools } from '@/api'
-
-/** 工具信息 */
-export interface Tool {
-  id: string
-  name: string
-  description: string
-  icon: string
-  version: string
-  endpoint: string
-  status: string
-}
+import type { ToolMeta } from '@/types'
 
 interface ToolsState {
-  tools: Tool[]
+  tools: ToolMeta[]
   isLoading: boolean
   error: string | null
   fetchTools: () => Promise<void>

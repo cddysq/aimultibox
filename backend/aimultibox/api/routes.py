@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """全局路由"""
 
+from typing import Any
 from fastapi import APIRouter
 from aimultibox import APP_META
 from aimultibox.core.config import settings
@@ -10,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/app")
-async def get_app_info():
+async def get_app_info() -> dict[str, Any]:
     """获取应用信息"""
     return {
         **APP_META,
@@ -20,6 +21,6 @@ async def get_app_info():
 
 
 @router.get("/tools")
-async def list_tools():
+async def list_tools() -> dict[str, list[dict[str, Any]]]:
     """获取工具列表"""
     return {"tools": ToolLoader.get_registered_tools()}

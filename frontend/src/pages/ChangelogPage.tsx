@@ -2,11 +2,11 @@
  * 更新日志
  */
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { 
-  Sparkles, 
-  Rocket, 
+import {
+  Sparkles,
+  Rocket,
   Zap,
   Bug,
   GitBranch,
@@ -28,16 +28,20 @@ interface ChangelogEntry {
 
 // 版本历史（新版本在前）
 const changelog: ChangelogEntry[] = [
-  // {
-  //   version: '0.0.2',
-  //   date: '2025-02-01',
-  //   type: 'minor',
-  //   titleKey: 'changelog.v002.title',
-  //   changes: [
-  //     { type: 'improve', textKey: 'changelog.v002.improve1' },
-  //     { type: 'fix', textKey: 'changelog.v002.fix1' },
-  //   ]
-  // },
+  {
+    version: '0.0.2',
+    date: '2025-12-29',
+    type: 'minor',
+    titleKey: 'changelog.v002.title',
+    changes: [
+      { type: 'feature', textKey: 'changelog.v002.feature1' },
+      { type: 'feature', textKey: 'changelog.v002.feature2' },
+      { type: 'feature', textKey: 'changelog.v002.feature3' },
+      { type: 'feature', textKey: 'changelog.v002.feature4' },
+      { type: 'improve', textKey: 'changelog.v002.improve1' },
+      { type: 'improve', textKey: 'changelog.v002.improve2' },
+    ]
+  },
   {
     version: '0.0.1',
     date: '2025-12-07',
@@ -87,7 +91,7 @@ export default function ChangelogPage() {
   const { t } = useTranslation()
   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set())
   const [showBackTop, setShowBackTop] = useState(false)
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([])
+  const itemRefs = useRef<HTMLDivElement[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -120,8 +124,8 @@ export default function ChangelogPage() {
       {/* 标题栏 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -152,11 +156,11 @@ export default function ChangelogPage() {
             const isLatest = index === 0
             const isLast = index === changelog.length - 1
             const hasMultiple = changelog.length > 1
-            
+
             return (
               <div
                 key={entry.version}
-                ref={(el) => (itemRefs.current[index] = el)}
+                ref={(el) => { if (el) itemRefs.current[index] = el }}
                 data-index={index}
                 className={`relative transition-all duration-500 ${hasMultiple ? 'pl-14' : ''} ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -174,7 +178,7 @@ export default function ChangelogPage() {
 
                 {/* 连接线动画点 - 只在非最后一个时显示 */}
                 {hasMultiple && !isLast && (
-                  <div 
+                  <div
                     className={`absolute left-[18px] top-14 w-1.5 h-1.5 rounded-full bg-primary-400 transition-all duration-1000 ${
                       isVisible ? 'opacity-100 animate-pulse' : 'opacity-0'
                     }`}
@@ -184,8 +188,8 @@ export default function ChangelogPage() {
 
                 {/* 内容卡片 */}
                 <div className={`rounded-xl border p-6 transition-all hover:shadow-md ${
-                  isLatest 
-                    ? 'bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-950/50 dark:to-purple-950/50 border-primary-300 dark:border-primary-700 shadow-lg shadow-primary-500/10' 
+                  isLatest
+                    ? 'bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-950/50 dark:to-purple-950/50 border-primary-300 dark:border-primary-700 shadow-lg shadow-primary-500/10'
                     : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700'
                 }`}>
                   {/* 头部 */}
@@ -224,8 +228,8 @@ export default function ChangelogPage() {
                     {entry.changes.map((change, changeIndex) => {
                       const Icon = typeIcons[change.type]
                       return (
-                        <div 
-                          key={changeIndex} 
+                        <div
+                          key={changeIndex}
                           className={`flex items-start space-x-3 p-3 rounded-lg bg-white/60 dark:bg-slate-700/50 border border-gray-100 dark:border-slate-600/50 transition-all duration-300 ${
                             isVisible ? 'opacity-100' : 'opacity-0'
                           }`}
@@ -252,8 +256,8 @@ export default function ChangelogPage() {
           })}
 
           {/* 起点标记 */}
-          <div 
-            ref={(el) => (itemRefs.current[changelog.length] = el)}
+          <div
+            ref={(el) => { if (el) itemRefs.current[changelog.length] = el }}
             data-index={changelog.length}
             className={`relative transition-all duration-500 ${changelog.length > 1 ? 'pl-14' : ''} ${
               visibleItems.has(changelog.length) ? 'opacity-100' : 'opacity-0'

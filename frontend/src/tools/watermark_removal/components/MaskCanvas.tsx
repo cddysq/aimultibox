@@ -75,8 +75,10 @@ export default function MaskCanvas({ imageUrl, onMaskChange, brushSize, onBrushS
     
     let clientX: number, clientY: number
     if ('touches' in e) {
-      clientX = e.touches[0].clientX
-      clientY = e.touches[0].clientY
+      const touch = e.touches[0]
+      if (!touch) return { x: 0, y: 0 }
+      clientX = touch.clientX
+      clientY = touch.clientY
     } else {
       clientX = e.clientX
       clientY = e.clientY

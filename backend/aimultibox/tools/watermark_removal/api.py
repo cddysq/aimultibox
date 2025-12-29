@@ -2,6 +2,7 @@
 """水印去除 - API 路由"""
 
 import base64
+from typing import Any
 from fastapi import APIRouter, File, UploadFile, HTTPException, Request, Response
 
 from aimultibox.core.ratelimit import limiter, DEFAULT_LIMIT
@@ -14,7 +15,7 @@ service = WatermarkRemovalService()
 
 
 @router.get("/")
-async def tool_info():
+async def tool_info() -> dict[str, Any]:
     """获取工具信息"""
     status = service.get_model_status()
     return {
@@ -42,7 +43,7 @@ async def remove_watermark(
     response: Response,
     image: UploadFile = File(...),
     mask: UploadFile = File(...),
-):
+) -> RemovalResponse:
     """去除水印（需要遮罩）"""
     try:
         if not image.content_type or not image.content_type.startswith("image/"):
@@ -82,7 +83,7 @@ async def remove_watermark_auto(
     request: Request,
     response: Response,
     image: UploadFile = File(...),
-):
+) -> RemovalResponse:
     """自动检测并去除水印"""
     try:
         if not image.content_type or not image.content_type.startswith("image/"):
@@ -118,7 +119,7 @@ async def detect_watermark(
     request: Request,
     response: Response,
     image: UploadFile = File(...),
-):
+) -> dict[str, Any]:
     """检测水印区域"""
     try:
         if not image.content_type or not image.content_type.startswith("image/"):
@@ -140,6 +141,6 @@ async def detect_watermark(
 
 
 @router.get("/status")
-async def get_status():
+async def get_status() -> dict[str, Any]:
     """获取模型状态"""
     return service.get_model_status()

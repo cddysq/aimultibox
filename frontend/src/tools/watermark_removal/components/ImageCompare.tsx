@@ -39,7 +39,8 @@ export default function ImageCompare({
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     isDraggingRef.current = true
-    handleMove(e.touches[0].clientX)
+    const touch = e.touches[0]
+    if (touch) handleMove(touch.clientX)
   }, [handleMove])
 
   useEffect(() => {
@@ -47,7 +48,8 @@ export default function ImageCompare({
       if (isDraggingRef.current) handleMove(e.clientX)
     }
     const handleTouchMove = (e: TouchEvent) => {
-      if (isDraggingRef.current) handleMove(e.touches[0].clientX)
+      const touch = e.touches[0]
+      if (isDraggingRef.current && touch) handleMove(touch.clientX)
     }
     const handleEnd = () => { isDraggingRef.current = false }
 

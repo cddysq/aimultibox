@@ -57,8 +57,8 @@ class APIException(Exception):
         message: str, 
         code: int = 400, 
         error_type: str = "BAD_REQUEST",
-        details: dict = None
-    ):
+        details: dict | None = None
+    ) -> None:
         self.message = message
         self.code = code
         self.error_type = error_type

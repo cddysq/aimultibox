@@ -2,7 +2,7 @@
  * 水印去除页
  */
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { 
   Upload, 
@@ -21,11 +21,14 @@ import {
   HardDrive,
   Copy
 } from 'lucide-react'
-import { removeWatermark, removeWatermarkAuto, getToolInfo, ToolInfo } from '@/api/watermark'
-import { addHistoryAsync, HistoryItem } from '@/stores'
-import ImageCompare from '@/components/ImageCompare'
-import MaskCanvas from '@/components/MaskCanvas'
-import HistoryPanel from '@/components/HistoryPanel'
+import { removeWatermark, removeWatermarkAuto, getToolInfo } from './api'
+import type { ToolInfo } from './api'
+import { addHistoryAsync } from '@/stores'
+import { getErrorMessage, getErrorStatus, getRetryAfter } from '@/types'
+import type { HistoryItem } from '@/stores'
+import ImageCompare from './components/ImageCompare'
+import MaskCanvas from './components/MaskCanvas'
+import HistoryPanel from './components/HistoryPanel'
 
 type Mode = 'manual' | 'auto'
 
@@ -47,8 +50,10 @@ const createInitialState = (): ModeState => ({
 /** base64 转 File */
 const base64ToFile = (base64: string, filename: string): File => {
   const arr = base64.split(',')
-  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png'
-  const bstr = atob(arr[1])
+  const mimeMatch = arr[0]?.match(/:(.*?);/)
+  const mime = mimeMatch?.[1] ?? 'image/png'
+  const base64Data = arr[1] ?? ''
+  const bstr = atob(base64Data)
   let n = bstr.length
   const u8arr = new Uint8Array(n)
   while (n--) u8arr[n] = bstr.charCodeAt(n)
@@ -216,9 +221,9 @@ export default function WatermarkRemovalPage() {
       } else {
         setError(result.message || t('errors.processingFailed'))
       }
-    } catch (err: any) {
-      if (err.response?.status === 429) {
-        const retryAfter = parseInt(err.response.headers?.['retry-after'] || '10', 10)
+    } catch (err) {
+      if (getErrorStatus(err) === 429) {
+        const retryAfter = getRetryAfter(err)
         setRateLimitCountdown(retryAfter)
         setError(t('errors.rateLimited'))
         
@@ -233,7 +238,7 @@ export default function WatermarkRemovalPage() {
           })
         }, 1000)
       } else {
-        setError(err.response?.data?.detail || t('errors.processingFailed'))
+        setError(getErrorMessage(err, t('errors.processingFailed')))
       }
       console.error(err)
     } finally {

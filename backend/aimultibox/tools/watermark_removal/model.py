@@ -102,10 +102,10 @@ class LaMaInpainter:
             
             if 'CUDAExecutionProvider' in available:
                 providers.append('CUDAExecutionProvider')
-                print("  ✓ CUDA 可用")
+                logger.info("CUDA 可用")
             if 'CoreMLExecutionProvider' in available:
                 providers.append('CoreMLExecutionProvider')
-                print("  ✓ CoreML 可用")
+                logger.info("CoreML 可用")
             providers.append('CPUExecutionProvider')
             
             sess_options = ort.SessionOptions()
@@ -118,14 +118,14 @@ class LaMaInpainter:
             )
             
             self.loaded = True
-            print(f"  ✓ LaMa 已加载: {model_path.name}")
+            logger.info(f"LaMa 已加载: {model_path.name}")
             return True
             
         except ImportError:
-            print("  ✗ 未安装 onnxruntime")
+            logger.error("未安装 onnxruntime")
             return False
         except Exception as e:
-            print(f"  ✗ 加载失败: {e}")
+            logger.error(f"LaMa 加载失败: {e}")
             return False
     
     def _get_mask_bbox(self, mask: np.ndarray) -> Tuple[int, int, int, int]:
@@ -434,7 +434,7 @@ class SDXLInpainter:
                 )
                 
                 if response.status_code != 201:
-                    print(f"API 错误: {response.status_code}")
+                    logger.error(f"Replicate API 错误: {response.status_code}")
                     return None
                 
                 prediction = response.json()
@@ -464,16 +464,16 @@ class SDXLInpainter:
                         break
                         
                     elif status["status"] == "failed":
-                        print(f"处理失败: {status.get('error')}")
+                        logger.error(f"SDXL 处理失败: {status.get('error')}")
                         break
                 
                 return None
                 
         except ImportError:
-            print("未安装 httpx")
+            logger.error("未安装 httpx")
             return None
         except Exception as e:
-            print(f"SDXL 错误: {e}")
+            logger.error(f"SDXL 错误: {e}")
             return None
 
 
@@ -499,7 +499,7 @@ class WatermarkModel:
     
     def _init(self):
         """初始化模型"""
-        print(f"📦 模型初始化 (模式: {self.mode})")
+        logger.info(f"模型初始化 (模式: {self.mode})")
         
         if self.mode == ModelMode.LOCAL.value:
             model_path = BASE_DIR / "models" / "lama_fp32.onnx"
@@ -507,16 +507,17 @@ class WatermarkModel:
             if model_path.exists():
                 self.lama.load(model_path)
             else:
-                print(f"  ⚠️ 模型文件未找到")
-                print(f"  路径: backend/models/lama_fp32.onnx")
-                print(f"  下载: {self.MODEL_URL}")
+                logger.warning(
+                    f"模型文件未找到，路径: backend/models/lama_fp32.onnx，"
+                    f"下载地址: {self.MODEL_URL}"
+                )
         
         elif self.mode == ModelMode.CLOUD.value:
             if settings.replicate_api_token:
                 self.sdxl = SDXLInpainter(settings.replicate_api_token)
-                print("  ✓ SDXL 已就绪")
+                logger.info("SDXL 已就绪")
             else:
-                print("  ⚠️ 未设置 REPLICATE_API_TOKEN")
+                logger.warning("未设置 REPLICATE_API_TOKEN")
     
     async def inpaint(self, image: Image.Image, mask: Image.Image) -> Optional[Image.Image]:
         """执行图像修复"""

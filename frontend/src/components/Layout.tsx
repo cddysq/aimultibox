@@ -1,11 +1,13 @@
 /**
  * 全局布局
  */
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link } from 'react-router'
 import { Box, Github, Menu, X, Sun, Moon, Monitor, Languages, GitBranch } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useThemeStore } from '@/stores'
+import { SUPPORTED_LANGS } from '@/locales'
+import LanguageSuggestionBanner from './LanguageSuggestionBanner'
 
 export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -36,15 +38,19 @@ export default function Layout() {
     { id: 'system' as const, name: t('layout.theme.system'), icon: Monitor },
   ]
 
-  const langOptions = [
-    { id: 'zh', name: '中文' },
-    { id: 'en', name: 'English' },
-  ]
+  const langOptions = SUPPORTED_LANGS.map(id => ({
+    id,
+    name: t(`langSuggestion.langs.${id}`),
+  }))
 
   const CurrentThemeIcon = resolvedTheme === 'dark' ? Moon : Sun
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors flex flex-col">
+    <>
+      {/* 语言建议横幅 - 基于 IP 地理位置检测 */}
+      <LanguageSuggestionBanner />
+
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors flex flex-col">
       {/* 导航栏 */}
       <nav className="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-100 dark:border-slate-700 sticky top-0 z-50 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,7 +74,7 @@ export default function Layout() {
                   className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex items-center space-x-1"
                 >
                   <Languages className="w-5 h-5" />
-                  <span className="text-sm">{i18n.language === 'zh' ? '中' : 'EN'}</span>
+                  <span className="text-sm">{t(`langSuggestion.langShort.${i18n.language}`)}</span>
                 </button>
                 
                 {langMenuOpen && (
@@ -207,5 +213,6 @@ export default function Layout() {
         </div>
       </footer>
     </div>
+    </>
   )
 }
