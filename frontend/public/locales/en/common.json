@@ -1,0 +1,97 @@
+{
+  "common": {
+    "close": "Close",
+    "retry": "Retry",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "clear": "Clear",
+    "download": "Download",
+    "upload": "Upload",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "success": "Success",
+    "error": "Error",
+    "view": "View",
+    "changeImage": "Change Image",
+    "back": "Back",
+    "optional": "optional",
+    "layout": {
+      "toolbox": "Toolbox",
+      "changelog": "Changelog",
+      "login": "Login",
+      "loginWith": "Sign in with",
+      "logout": "Logout",
+      "theme": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
+    },
+    "langSuggestion": {
+      "detected": "We detected you're in {{country}}",
+      "switchHint": "Would you like to switch to {{lang}} for a better experience?",
+      "switchTo": "Switch to {{lang}}",
+      "keepCurrent": "Keep current",
+      "langs": {
+        "zh": "Chinese",
+        "en": "English",
+        "ja": "Japanese"
+      },
+      "langShort": {
+        "zh": "ZH",
+        "en": "EN",
+        "ja": "JA"
+      },
+      "countries": {
+        "CN": "China",
+        "TW": "Taiwan",
+        "HK": "Hong Kong",
+        "MO": "Macau",
+        "SG": "Singapore",
+        "JP": "Japan",
+        "KR": "South Korea",
+        "US": "United States",
+        "GB": "United Kingdom",
+        "AU": "Australia",
+        "CA": "Canada",
+        "NZ": "New Zealand",
+        "DE": "Germany",
+        "FR": "France",
+        "IT": "Italy"
+      }
+    },
+    "tools": {
+      "currency-manager": {
+        "name": "Currency Manager",
+        "description": "Rate monitoring, trade records, P/L analysis, alerts"
+      },
+      "watermark-removal": {
+        "name": "AI Watermark Removal",
+        "description": "Remove watermarks using LaMa/SDXL models"
+      }
+    },
+    "home": {
+      "tagline": "AI Toolbox",
+      "title": "AIMultiBox",
+      "description": "Extensible AI toolbox platform",
+      "noTools": "No tools available",
+      "noToolsHint": "Make sure backend is running",
+      "features": {
+        "plugin": {
+          "title": "Plugin Architecture",
+          "desc": "Tools as plugins, infinitely extensible"
+        },
+        "deploy": {
+          "title": "Multiple Deploy",
+          "desc": "Online, local, or server deployment"
+        },
+        "model": {
+          "title": "Model Switching",
+          "desc": "Local LaMa or cloud SDXL"
+        }
+      }
+    }
+  }
+}

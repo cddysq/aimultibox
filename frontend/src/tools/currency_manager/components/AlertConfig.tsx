@@ -1,7 +1,8 @@
 /**
  * 预警配置组件
  */
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import {
   Bell,
@@ -14,7 +15,7 @@ import {
   TrendingDown,
   Activity,
 } from 'lucide-react'
-import { getAlerts, createAlert, deleteAlert, updateAlert, type AlertRule, type AlertCreate } from '../api'
+import { getAlerts, createAlert, deleteAlert, updateAlert, type AlertCreate } from '../api'
 import { ConfirmModal } from '@/components'
 import { getErrorMessage } from '@/types'
 
@@ -32,8 +33,6 @@ const CONDITION_OPTIONS = [
 export default function AlertConfig({ currencyPair, currentRate }: AlertConfigProps) {
   const { t } = useTranslation()
   
-  const [alerts, setAlerts] = useState<AlertRule[]>([])
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
   // 添加表单
@@ -48,23 +47,22 @@ export default function AlertConfig({ currencyPair, currentRate }: AlertConfigPr
     id: null,
   })
 
-  // 加载预警规则
-  const loadAlerts = useCallback(async () => {
-    setLoading(true)
-    setError('')
-    try {
-      const res = await getAlerts(currencyPair)
-      setAlerts(res.data || [])
-    } catch (err) {
-      setError(getErrorMessage(err, t('errors.loadToolsFailed')))
-    } finally {
-      setLoading(false)
-    }
-  }, [currencyPair, t])
+  const queryClient = useQueryClient()
+
+  // 预警规则查询
+  const alertsQuery = useQuery({
+    queryKey: ['currency', 'alerts', currencyPair],
+    queryFn: () => getAlerts(currencyPair),
+    staleTime: 60_000,
+  })
+
+  const alerts = alertsQuery.data?.items || []
 
   useEffect(() => {
-    loadAlerts()
-  }, [loadAlerts])
+    if (alertsQuery.isError) {
+      setError(getErrorMessage(alertsQuery.error, t('errors.backendUnavailable')))
+    }
+  }, [alertsQuery.isError, alertsQuery.error, t])
 
   // 添加预警
   const handleAdd = async () => {
@@ -85,7 +83,7 @@ export default function AlertConfig({ currencyPair, currentRate }: AlertConfigPr
       })
       setNewThreshold('')
       setShowAddForm(false)
-      await loadAlerts()
+      await queryClient.invalidateQueries({ queryKey: ['currency', 'alerts', currencyPair] })
     } catch (err) {
       setError(getErrorMessage(err, t('currency.errors.createFailed')))
     } finally {
@@ -103,7 +101,7 @@ export default function AlertConfig({ currencyPair, currentRate }: AlertConfigPr
     
     try {
       await deleteAlert(deleteConfirm.id)
-      await loadAlerts()
+      await queryClient.invalidateQueries({ queryKey: ['currency', 'alerts', currencyPair] })
     } catch (err) {
       setError(getErrorMessage(err, t('errors.processingFailed')))
     } finally {
@@ -115,9 +113,7 @@ export default function AlertConfig({ currencyPair, currentRate }: AlertConfigPr
   const handleToggle = async (id: number, enabled: boolean) => {
     try {
       await updateAlert(id, { enabled: !enabled })
-      setAlerts(prev => prev.map(a => 
-        a.id === id ? { ...a, enabled: !enabled } : a
-      ))
+      await queryClient.invalidateQueries({ queryKey: ['currency', 'alerts', currencyPair] })
     } catch (err) {
       setError(getErrorMessage(err, t('errors.processingFailed')))
     }
@@ -236,7 +232,7 @@ export default function AlertConfig({ currencyPair, currentRate }: AlertConfigPr
       )}
 
       {/* 规则列表 */}
-      {loading ? (
+      {alertsQuery.isLoading ? (
         <div className="flex justify-center py-4">
           <Loader2 className="w-6 h-6 text-primary-500 animate-spin" />
         </div>

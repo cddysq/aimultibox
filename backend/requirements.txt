@@ -1,20 +1,20 @@
 # Core
-fastapi>=0.123.5
-uvicorn[standard]>=0.38.0
+fastapi>=0.128.0
+uvicorn[standard]>=0.40.0
 pydantic>=2.12.5
 pydantic-settings>=2.12.0
-python-multipart>=0.0.20
+python-multipart>=0.0.21
 
 # Image
-Pillow>=12.0.0
-opencv-python-headless>=4.12.0.88
-numpy>=2.2.5
+Pillow>=12.1.0
+opencv-python-headless>=4.13.0.90
+numpy>=2.4.1
 
 # Local inference
-onnxruntime>=1.21.0
+onnxruntime>=1.23.2
 
 # Text detection (for watermark)
-easyocr>=1.7.0
+easyocr>=1.7.2
 
 # HTTP client
 httpx>=0.28.1
@@ -25,3 +25,7 @@ slowapi>=0.1.9
 # Utils
 python-dotenv>=1.2.1
 aiofiles>=25.1.0
+cachetools>=6.2.4
+
+# ORM
+sqlalchemy>=2.0.45

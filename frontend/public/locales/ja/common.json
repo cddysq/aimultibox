@@ -1,0 +1,97 @@
+{
+  "common": {
+    "close": "閉じる",
+    "retry": "再試行",
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "clear": "クリア",
+    "download": "ダウンロード",
+    "upload": "アップロード",
+    "loading": "読み込み中...",
+    "processing": "処理中...",
+    "success": "成功",
+    "error": "エラー",
+    "view": "表示",
+    "changeImage": "画像を変更",
+    "back": "戻る",
+    "optional": "任意",
+    "layout": {
+      "toolbox": "ツールボックス",
+      "changelog": "更新履歴",
+      "login": "ログイン",
+      "loginWith": "ログイン方法",
+      "logout": "ログアウト",
+      "theme": {
+        "light": "ライト",
+        "dark": "ダーク",
+        "system": "システム"
+      }
+    },
+    "langSuggestion": {
+      "detected": "現在地は{{country}}です",
+      "switchHint": "より良い体験のため{{lang}}に切り替えますか？",
+      "switchTo": "{{lang}}に切替",
+      "keepCurrent": "現在のまま",
+      "langs": {
+        "zh": "中国語",
+        "en": "英語",
+        "ja": "日本語"
+      },
+      "langShort": {
+        "zh": "中",
+        "en": "EN",
+        "ja": "日"
+      },
+      "countries": {
+        "CN": "中国",
+        "TW": "台湾",
+        "HK": "香港",
+        "MO": "マカオ",
+        "SG": "シンガポール",
+        "JP": "日本",
+        "KR": "韓国",
+        "US": "アメリカ",
+        "GB": "イギリス",
+        "AU": "オーストラリア",
+        "CA": "カナダ",
+        "NZ": "ニュージーランド",
+        "DE": "ドイツ",
+        "FR": "フランス",
+        "IT": "イタリア"
+      }
+    },
+    "tools": {
+      "currency-manager": {
+        "name": "為替マネージャー",
+        "description": "レート監視、取引記録、損益分析、アラート"
+      },
+      "watermark-removal": {
+        "name": "AI ウォーターマーク除去",
+        "description": "LaMa/SDXL モデルでウォーターマークを除去"
+      }
+    },
+    "home": {
+      "tagline": "AI ツールボックス",
+      "title": "AIMultiBox",
+      "description": "拡張可能な AI ツールボックス",
+      "noTools": "利用可能なツールがありません",
+      "noToolsHint": "バックエンドが起動していることを確認してください",
+      "features": {
+        "plugin": {
+          "title": "プラグイン設計",
+          "desc": "ツールをプラグインとして無限に拡張"
+        },
+        "deploy": {
+          "title": "複数のデプロイ方法",
+          "desc": "オンライン、ローカル、サーバー対応"
+        },
+        "model": {
+          "title": "モデル切り替え",
+          "desc": "ローカル LaMa またはクラウド SDXL"
+        }
+      }
+    }
+  }
+}

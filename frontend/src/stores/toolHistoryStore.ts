@@ -5,7 +5,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import type { StateStorage } from 'zustand/middleware'
-import { get as idbGet, set as idbSet, del as idbDel } from 'idb-keyval'
+import { cacheUtils } from '@/utils/cache'
 
 /** 历史记录项 */
 export interface HistoryItem {
@@ -30,29 +30,17 @@ const MAX_ITEMS = 10
 // IndexedDB 存储适配器
 const indexedDBStorage: StateStorage = {
   getItem: async (name) => {
-    try {
-      return await idbGet(name) ?? null
-    } catch {
-      return null
-    }
+    return await cacheUtils.idb.get(name)
   },
   setItem: async (name, value) => {
-    try {
-      await idbSet(name, value)
-    } catch (e) {
-      console.error('IndexedDB 存储失败', e)
-    }
+    await cacheUtils.idb.set(name, value)
   },
   removeItem: async (name) => {
-    try {
-      await idbDel(name)
-    } catch {
-      // ignore
-    }
+    await cacheUtils.idb.remove(name)
   },
 }
 
-export const useHistoryStore = create<HistoryState>()(
+export const useToolHistoryStore = create<HistoryState>()(
   persist(
     (set, get) => ({
       history: [],
@@ -90,5 +78,5 @@ export const useHistoryStore = create<HistoryState>()(
 export const addHistoryAsync = async (
   item: Omit<HistoryItem, 'id' | 'timestamp'>
 ): Promise<void> => {
-  useHistoryStore.getState().addHistory(item)
+  useToolHistoryStore.getState().addHistory(item)
 }

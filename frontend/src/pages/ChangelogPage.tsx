@@ -1,7 +1,7 @@
 /**
  * 更新日志
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import {
@@ -19,43 +19,16 @@ interface ChangelogEntry {
   version: string
   date: string
   type: 'major' | 'minor' | 'patch'
-  titleKey: string
+  title: string
   changes: {
     type: 'feature' | 'improve' | 'fix'
-    textKey: string
+    text: string
   }[]
 }
 
-// 版本历史（新版本在前）
-const changelog: ChangelogEntry[] = [
-  {
-    version: '0.0.2',
-    date: '2025-12-29',
-    type: 'minor',
-    titleKey: 'changelog.v002.title',
-    changes: [
-      { type: 'feature', textKey: 'changelog.v002.feature1' },
-      { type: 'feature', textKey: 'changelog.v002.feature2' },
-      { type: 'feature', textKey: 'changelog.v002.feature3' },
-      { type: 'feature', textKey: 'changelog.v002.feature4' },
-      { type: 'improve', textKey: 'changelog.v002.improve1' },
-      { type: 'improve', textKey: 'changelog.v002.improve2' },
-    ]
-  },
-  {
-    version: '0.0.1',
-    date: '2025-12-07',
-    type: 'major',
-    titleKey: 'changelog.v001.title',
-    changes: [
-      { type: 'feature', textKey: 'changelog.v001.feature1' },
-      { type: 'feature', textKey: 'changelog.v001.feature2' },
-      { type: 'feature', textKey: 'changelog.v001.feature3' },
-      { type: 'feature', textKey: 'changelog.v001.feature4' },
-      { type: 'feature', textKey: 'changelog.v001.feature5' },
-    ]
-  },
-]
+interface ChangelogData {
+  entries: ChangelogEntry[]
+}
 
 const typeIcons = {
   feature: Sparkles,
@@ -87,11 +60,59 @@ const nodeColors = {
   patch: 'bg-gradient-to-br from-gray-400 to-gray-500 shadow-gray-500/30',
 }
 
+const resolveLang = (lang?: string | null) => {
+  if (!lang) return 'zh'
+  const normalized = lang.toLowerCase()
+  if (normalized.startsWith('zh')) return 'zh'
+  if (normalized.startsWith('en')) return 'en'
+  if (normalized.startsWith('ja')) return 'ja'
+  return 'zh'
+}
+
 export default function ChangelogPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const resolvedLang = useMemo(
+    () => resolveLang(i18n.resolvedLanguage || i18n.language),
+    [i18n.language, i18n.resolvedLanguage]
+  )
+  const [entries, setEntries] = useState<ChangelogEntry[]>([])
+  const [loading, setLoading] = useState(true)
   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set())
   const [showBackTop, setShowBackTop] = useState(false)
   const itemRefs = useRef<HTMLDivElement[]>([])
+  useEffect(() => {
+    let canceled = false
+    setLoading(true)
+    setVisibleItems(new Set())
+    itemRefs.current = []
+
+    const fetchChangelog = (targetLang: string) =>
+      fetch(`/changelog/${targetLang}.json`).then((res) => res.json())
+    fetchChangelog(resolvedLang)
+      .catch(() => {
+        if (resolvedLang !== 'zh') {
+          return fetchChangelog('zh')
+        }
+        throw new Error('failed')
+      })
+      .then((data: ChangelogData) => {
+        if (!canceled) {
+          setEntries(data.entries || [])
+        }
+      })
+      .catch(() => {
+        if (!canceled) {
+          setEntries([])
+        }
+      })
+      .finally(() => {
+        if (!canceled) setLoading(false)
+      })
+
+    return () => {
+      canceled = true
+    }
+  }, [resolvedLang])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -99,7 +120,7 @@ export default function ChangelogPage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const index = Number(entry.target.getAttribute('data-index'))
-            setVisibleItems((prev) => new Set(prev).add(index))
+            if (!Number.isNaN(index)) setVisibleItems((prev) => new Set(prev).add(index))
           }
         })
       },
@@ -111,10 +132,12 @@ export default function ChangelogPage() {
     })
 
     return () => observer.disconnect()
-  }, [])
+  }, [entries])
 
   useEffect(() => {
-    const handleScroll = () => setShowBackTop(window.scrollY > 300)
+    const handleScroll = () => {
+      setShowBackTop(window.scrollY > 300)
+    }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -144,18 +167,23 @@ export default function ChangelogPage() {
 
       {/* 时间线容器 */}
       <div className="relative">
+        {!loading && entries.length === 0 && (
+          <div className="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center text-gray-500 dark:text-gray-400">
+            {t('changelog.empty')}
+          </div>
+        )}
         {/* 时间线轴 - 只在多版本时显示 */}
-        {changelog.length > 1 && (
+        {entries.length > 1 && (
           <div className="absolute left-5 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary-400 via-purple-400 to-gray-200 dark:to-slate-700" />
         )}
 
         {/* 版本列表 */}
         <div className="space-y-6">
-          {changelog.map((entry, index) => {
+          {entries.map((entry, index) => {
             const isVisible = visibleItems.has(index)
             const isLatest = index === 0
-            const isLast = index === changelog.length - 1
-            const hasMultiple = changelog.length > 1
+            const isLast = index === entries.length - 1
+            const hasMultiple = entries.length > 1
 
             return (
               <div
@@ -212,9 +240,9 @@ export default function ChangelogPage() {
                             </span>
                           )}
                         </div>
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mt-1">
-                          {t(entry.titleKey)}
-                        </h2>
+                          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mt-1">
+                            {entry.title}
+                          </h2>
                       </div>
                     </div>
                     <div className="flex items-center space-x-1 text-gray-400 dark:text-gray-500 text-sm">
@@ -243,7 +271,7 @@ export default function ChangelogPage() {
                               {t(typeLabels[change.type])}
                             </span>
                             <p className="text-gray-700 dark:text-gray-300 text-sm mt-0.5">
-                              {t(change.textKey)}
+                              {change.text}
                             </p>
                           </div>
                         </div>
@@ -257,25 +285,25 @@ export default function ChangelogPage() {
 
           {/* 起点标记 */}
           <div
-            ref={(el) => { if (el) itemRefs.current[changelog.length] = el }}
-            data-index={changelog.length}
-            className={`relative transition-all duration-500 ${changelog.length > 1 ? 'pl-14' : ''} ${
-              visibleItems.has(changelog.length) ? 'opacity-100' : 'opacity-0'
+            ref={(el) => { if (el) itemRefs.current[entries.length] = el }}
+            data-index={entries.length}
+            className={`relative transition-all duration-500 ${entries.length > 1 ? 'pl-14' : ''} ${
+              visibleItems.has(entries.length) ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            {changelog.length > 1 && (
+            {entries.length > 1 && (
               <div className="absolute left-0 w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-slate-600">
                 <Sparkles className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               </div>
             )}
-            <div className={`flex items-center space-x-3 ${changelog.length > 1 ? '' : 'pt-2'}`}>
-              {changelog.length <= 1 && (
+            <div className={`flex items-center space-x-3 ${entries.length > 1 ? '' : 'pt-2'}`}>
+              {entries.length <= 1 && (
                 <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-slate-800 flex items-center justify-center border border-dashed border-gray-300 dark:border-slate-600">
                   <Sparkles className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
               )}
               <p className="text-gray-400 dark:text-gray-500 text-sm italic">
-                {t('changelog.beginning')}
+                {loading ? t('common.loading') : t('changelog.beginning')}
               </p>
             </div>
           </div>

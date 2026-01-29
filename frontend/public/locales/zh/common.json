@@ -1,0 +1,97 @@
+{
+  "common": {
+    "close": "关闭",
+    "retry": "重试",
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "clear": "清空",
+    "download": "下载",
+    "upload": "上传",
+    "loading": "加载中...",
+    "processing": "处理中...",
+    "success": "成功",
+    "error": "错误",
+    "view": "查看",
+    "changeImage": "更换图片",
+    "back": "返回",
+    "optional": "选填",
+    "layout": {
+      "toolbox": "工具箱",
+      "changelog": "更新日志",
+      "login": "登录",
+      "loginWith": "登录方式",
+      "logout": "退出登录",
+      "theme": {
+        "light": "浅色",
+        "dark": "深色",
+        "system": "跟随系统"
+      }
+    },
+    "langSuggestion": {
+      "detected": "检测到您当前位于{{country}}",
+      "switchHint": "是否切换到{{lang}}版本以获得更好的体验？",
+      "switchTo": "切换到{{lang}}",
+      "keepCurrent": "保持当前",
+      "langs": {
+        "zh": "中文",
+        "en": "英文",
+        "ja": "日文"
+      },
+      "langShort": {
+        "zh": "中",
+        "en": "EN",
+        "ja": "日"
+      },
+      "countries": {
+        "CN": "中国",
+        "TW": "台湾",
+        "HK": "香港",
+        "MO": "澳门",
+        "SG": "新加坡",
+        "JP": "日本",
+        "KR": "韩国",
+        "US": "美国",
+        "GB": "英国",
+        "AU": "澳大利亚",
+        "CA": "加拿大",
+        "NZ": "新西兰",
+        "DE": "德国",
+        "FR": "法国",
+        "IT": "意大利"
+      }
+    },
+    "tools": {
+      "currency-manager": {
+        "name": "汇率管家",
+        "description": "汇率监控、交易记录、盈亏分析、预警提醒"
+      },
+      "watermark-removal": {
+        "name": "AI 去水印",
+        "description": "使用 LaMa/SDXL 模型去除图片水印"
+      }
+    },
+    "home": {
+      "tagline": "AI 工具箱",
+      "title": "AIMultiBox",
+      "description": "可扩展的 AI 工具箱平台",
+      "noTools": "暂无可用工具",
+      "noToolsHint": "请确保后端服务已启动",
+      "features": {
+        "plugin": {
+          "title": "插件式架构",
+          "desc": "工具以插件形式存在，可无限扩展"
+        },
+        "deploy": {
+          "title": "多种部署方式",
+          "desc": "支持在线访问、本地运行、服务器部署"
+        },
+        "model": {
+          "title": "模型可切换",
+          "desc": "本地 LaMa 或云端 SDXL"
+        }
+      }
+    }
+  }
+}

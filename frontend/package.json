@@ -1,7 +1,7 @@
 {
   "name": "aimultibox-frontend",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.0.3",
   "type": "module",
   "engines": {
     "node": ">=20.19.0"
@@ -16,6 +16,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@tanstack/query-async-storage-persister": "^5.90.21",
+    "@tanstack/react-query": "^5.90.19",
+    "@tanstack/react-query-persist-client": "^5.90.21",
     "axios": "^1.7.9",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
@@ -23,6 +26,7 @@
     "echarts-for-react": "^3.0.5",
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.2.0",
+    "i18next-http-backend": "^3.0.2",
     "idb-keyval": "^6.2.2",
     "lucide-react": "^0.468.0",
     "react": "^19.1.0",

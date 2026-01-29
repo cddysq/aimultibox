@@ -105,12 +105,10 @@ export function useNotification(): UseNotificationReturn {
           tag: options.tag,
         })
 
-        if (options.onClick) {
-          notification.onclick = () => {
-            window.focus()
-            options.onClick?.()
-            notification.close()
-          }
+        notification.onclick = () => {
+          window.focus()
+          options.onClick?.()
+          notification.close()
         }
 
         return notification

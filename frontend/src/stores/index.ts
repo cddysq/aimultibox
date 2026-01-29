@@ -1,8 +1,8 @@
 /**
  * 状态管理导出
  */
-export { useThemeStore } from './themeStore'
-export { useToolsStore } from './toolsStore'
-export { useHistoryStore, addHistoryAsync, type HistoryItem } from './historyStore'
+export { usePrefsStore } from './prefsStore'
+export { useToolHistoryStore, addHistoryAsync, type HistoryItem } from './toolHistoryStore'
+export { useAuthStore } from './authStore'
 
 export type { ToolMeta as Tool } from '@/types'

@@ -12,6 +12,9 @@ from fastapi.responses import JSONResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from aimultibox.common.enums import ErrorCode
+from aimultibox.common.errors import error_response
+from starlette import status as HTTP
 
 logger = logging.getLogger("aimultibox")
 
@@ -39,19 +42,13 @@ def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded) -> JSO
     """限流异常处理"""
     request_id = getattr(request.state, 'request_id', 'unknown')
     logger.warning(f"[{request_id}] 限流触发: {exc.detail}")
-    
-    return JSONResponse(
-        status_code=429,
-        content={
-            "success": False,
-            "error": {
-                "type": "RATE_LIMIT_EXCEEDED",
-                "message": "请求过于频繁，请稍后再试",
-                "detail": str(exc.detail),
-            },
-            "request_id": request_id,
-        },
-        headers={"Retry-After": "10"}
+
+    return error_response(
+        ErrorCode.RATE_LIMIT_EXCEEDED,
+        "请求过于频繁，请稍后再试",
+        HTTP.HTTP_429_TOO_MANY_REQUESTS,
+        {"info": str(exc.detail)},
+        headers={"Retry-After": "10"},
     )
 
 

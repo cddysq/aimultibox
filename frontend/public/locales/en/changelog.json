@@ -1,0 +1,14 @@
+{
+  "changelog": {
+    "title": "Changelog",
+    "subtitle": "Every step of our journey",
+    "empty": "No release notes yet",
+    "latest": "Latest",
+    "beginning": "The story begins here...",
+    "types": {
+      "feature": "Feature",
+      "improve": "Improve",
+      "fix": "Fix"
+    }
+  }
+}

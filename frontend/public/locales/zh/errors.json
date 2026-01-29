@@ -1,0 +1,42 @@
+{
+  "errors": {
+    "loadToolsFailed": "获取工具列表失败",
+    "backendUnavailable": "后端服务不可用，请检查是否已启动",
+    "invalidImage": "请选择有效的图片文件",
+    "processingFailed": "处理失败，请检查后端服务",
+    "rateLimited": "请求过于频繁，请稍后再试",
+    "rateLimitWait": "{{seconds}} 秒后可重试",
+    "notFound": {
+      "title": "页面未找到",
+      "description": "您访问的页面可能已移除或暂时不可用",
+      "back": "返回",
+      "home": "首页",
+      "visitPath": "访问路径",
+      "orVisit": "或者访问",
+      "feedback": "反馈问题"
+    },
+    "serviceError": {
+      "title": "服务暂时不可用",
+      "description": "我们正在维护中，请稍后再试",
+      "retry": "重新尝试",
+      "waited": "已等待",
+      "easterEgg": "彩蛋解锁！你找到了秘密！",
+      "duration": {
+        "days": "天",
+        "hours": "小时",
+        "minutes": "分钟",
+        "seconds": "秒"
+      },
+      "milestone": {
+        "1min": "休息一下",
+        "5min": "无聊吧？试试 ↑↑↓↓←→←→BA",
+        "10min": "辛苦等待了",
+        "30min": "泡杯茶吧",
+        "1hour": "要不先去忙其他的？",
+        "6hour": "真的很有耐心",
+        "12hour": "坚持就是胜利",
+        "24hour": "传奇等待者！"
+      }
+    }
+  }
+}

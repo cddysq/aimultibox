@@ -7,7 +7,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Globe, X } from 'lucide-react'
-import { SUPPORTED_LANGS, type SupportedLang, COUNTRY_TO_LANG } from '@/locales'
+import { SUPPORTED_LANGS, type SupportedLang } from '@/config'
+import { cacheUtils } from '@/utils/cache'
+
+/** 国家代码 -> 推荐语言 */
+const COUNTRY_TO_LANG: Partial<Record<string, SupportedLang>> = {
+  CN: 'zh', TW: 'zh', HK: 'zh', MO: 'zh',
+  JP: 'ja',
+  US: 'en', GB: 'en', AU: 'en', CA: 'en', NZ: 'en', SG: 'en',
+}
 
 const DISMISSED_KEY = 'aimultibox-lang-suggestion-dismissed'
 
@@ -34,21 +42,17 @@ function useGeoLocation() {
       for (const api of GEOIP_APIS) {
         try {
           const res = await fetch(api.url)
-          if (!res.ok) {
-            console.warn(`[i18n] GeoIP API 请求失败 (${api.url}):`, res.status)
-            continue
-          }
+          if (!res.ok) continue
           const data = await res.json()
           const parsed = api.parse(data)
           if (parsed.countryCode) {
             setGeoInfo(parsed)
             return
           }
-        } catch (err) {
-          console.warn(`[i18n] GeoIP 请求异常 (${api.url}):`, err instanceof Error ? err.message : err)
+        } catch {
+          // GeoIP 失败不影响功能，静默处理
         }
       }
-      console.warn('[i18n] 所有 GeoIP API 均失败')
     }
     fetchGeo().finally(() => setLoading(false))
   }, [])
@@ -67,7 +71,7 @@ export default function LanguageSuggestionBanner() {
   // 判断是否需要显示横幅
   useEffect(() => {
     if (loading || !geoInfo) return
-    if (localStorage.getItem(DISMISSED_KEY)) return
+    if (cacheUtils.local.getBool(DISMISSED_KEY) === true) return
 
     const suggested = COUNTRY_TO_LANG[geoInfo.countryCode]
     if (suggested && SUPPORTED_LANGS.includes(suggested) && suggested !== currentLang) {
@@ -79,19 +83,19 @@ export default function LanguageSuggestionBanner() {
   const handleSwitch = useCallback(() => {
     if (suggestedLang) i18n.changeLanguage(suggestedLang)
     setVisible(false)
-    localStorage.setItem(DISMISSED_KEY, 'true')
+    cacheUtils.local.setBool(DISMISSED_KEY, true)
   }, [suggestedLang, i18n])
 
   const handleDismiss = useCallback(() => {
     setVisible(false)
-    localStorage.setItem(DISMISSED_KEY, 'true')
+    cacheUtils.local.setBool(DISMISSED_KEY, true)
   }, [])
 
   if (!visible || !geoInfo || !suggestedLang) return null
 
   // 从翻译文件获取本地化名称
-  const countryName = t(`langSuggestion.countries.${geoInfo.countryCode}`, { defaultValue: geoInfo.country })
-  const suggestedLangName = t(`langSuggestion.langs.${suggestedLang}`, { defaultValue: suggestedLang })
+  const countryName = t(`common.langSuggestion.countries.${geoInfo.countryCode}`, { defaultValue: geoInfo.country })
+  const suggestedLangName = t(`common.langSuggestion.langs.${suggestedLang}`, { defaultValue: suggestedLang })
 
   const bannerContent = (
     <div
@@ -118,10 +122,10 @@ export default function LanguageSuggestionBanner() {
             {/* 文本内容 */}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 dark:text-white">
-                {t('langSuggestion.detected', { country: countryName })}
+                {t('common.langSuggestion.detected', { country: countryName })}
               </p>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {t('langSuggestion.switchHint', { lang: suggestedLangName })}
+                {t('common.langSuggestion.switchHint', { lang: suggestedLangName })}
               </p>
             </div>
 
@@ -149,7 +153,7 @@ export default function LanguageSuggestionBanner() {
                          hover:bg-gray-200 dark:hover:bg-slate-600
                          transition-colors"
             >
-              {t('langSuggestion.keepCurrent')}
+              {t('common.langSuggestion.keepCurrent')}
             </button>
             <button
               onClick={handleSwitch}
@@ -159,7 +163,7 @@ export default function LanguageSuggestionBanner() {
                          hover:bg-primary-700 dark:hover:bg-primary-600
                          transition-colors"
             >
-              {t('langSuggestion.switchTo', { lang: suggestedLangName })}
+              {t('common.langSuggestion.switchTo', { lang: suggestedLangName })}
             </button>
           </div>
         </div>

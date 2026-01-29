@@ -2,6 +2,7 @@
  * 水印去除页
  */
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { 
@@ -22,7 +23,6 @@ import {
   Copy
 } from 'lucide-react'
 import { removeWatermark, removeWatermarkAuto, getToolInfo } from './api'
-import type { ToolInfo } from './api'
 import { addHistoryAsync } from '@/stores'
 import { getErrorMessage, getErrorStatus, getRetryAfter } from '@/types'
 import type { HistoryItem } from '@/stores'
@@ -72,11 +72,16 @@ export default function WatermarkRemovalPage() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [rateLimitCountdown, setRateLimitCountdown] = useState(0)
-  const [toolInfo, setToolInfo] = useState<ToolInfo | null>(null)
+  const toolInfoQuery = useQuery({
+    queryKey: ['watermark', 'toolInfo'],
+    queryFn: getToolInfo,
+    staleTime: 10 * 60_000,
+  })
   const [showReuseHint, setShowReuseHint] = useState(false)
   const [brushSize, setBrushSize] = useState(30)
   const [maskResetKey, setMaskResetKey] = useState(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const rateLimitTimerRef = useRef<number | null>(null)
 
   // 当前模式的状态
   const currentState = mode === 'manual' ? manualState : autoState
@@ -86,8 +91,15 @@ export default function WatermarkRemovalPage() {
   // 是否有任何图片（用于判断显示上传区还是操作区）
   const hasAnyImage = manualState.image || autoState.image
 
+  const toolInfo = toolInfoQuery.data || null
+
   useEffect(() => {
-    getToolInfo().then(setToolInfo).catch(console.error)
+    return () => {
+      if (rateLimitTimerRef.current !== null) {
+        clearInterval(rateLimitTimerRef.current)
+        rateLimitTimerRef.current = null
+      }
+    }
   }, [])
 
   // 检测是否可复用另一模式的图片
@@ -196,7 +208,7 @@ export default function WatermarkRemovalPage() {
         result = await removeWatermarkAuto(currentState.file)
       }
       
-      if (result.status === 'success' && result.image_base64) {
+      if (result.image_base64) {
         const processedImageData = `data:image/png;base64,${result.image_base64}`
         
         setCurrentState(prev => ({
@@ -219,24 +231,30 @@ export default function WatermarkRemovalPage() {
           mode: mode,
         })
       } else {
-        setError(result.message || t('errors.processingFailed'))
+        setError(t('errors.processingFailed'))
       }
     } catch (err) {
       if (getErrorStatus(err) === 429) {
         const retryAfter = getRetryAfter(err)
+        if (rateLimitTimerRef.current !== null) {
+          clearInterval(rateLimitTimerRef.current)
+          rateLimitTimerRef.current = null
+        }
         setRateLimitCountdown(retryAfter)
         setError(t('errors.rateLimited'))
-        
-        const timer = setInterval(() => {
+
+        const timer = window.setInterval(() => {
           setRateLimitCountdown(prev => {
             if (prev <= 1) {
               clearInterval(timer)
+              rateLimitTimerRef.current = null
               setError(null)
               return 0
             }
             return prev - 1
           })
         }, 1000)
+        rateLimitTimerRef.current = timer
       } else {
         setError(getErrorMessage(err, t('errors.processingFailed')))
       }

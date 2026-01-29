@@ -1,0 +1,116 @@
+{
+  "currency": {
+    "title": "汇率管家",
+    "subtitle": "汇率监控与盈亏分析",
+    "refresh": "刷新汇率",
+    "selectCurrency": "选择货币",
+    "days": "天",
+    "settings": "设置",
+    "refreshSettings": "刷新设置",
+    "autoRefresh": "自动刷新",
+    "backendInterval": "后台刷新",
+    "nextRefresh": "下次刷新",
+    "seconds": "秒",
+    "lastUpdate": "数据源更新",
+    "rate": "汇率",
+    "midRate": "中间价",
+    "rtbBid": "现汇买入",
+    "rthBid": "现钞买入",
+    "rtcOfr": "现汇卖出",
+    "rthOfr": "现钞卖出",
+    "sellForeignTitle": "结汇（你卖外币给银行）",
+    "buyForeignTitle": "购汇（你从银行买外币）",
+    "high": "最高",
+    "low": "最低",
+    "average": "平均",
+    "streak": {
+      "rising": "连涨 {{days}} 天",
+      "falling": "连跌 {{days}} 天",
+      "cumulative": "累计"
+    },
+    "noData": "暂无数据",
+    "noTrades": "暂无交易记录",
+    "noProfitData": "添加交易后查看盈亏",
+    "totalRecords": "共 {{count}} 条",
+    "buy": "买入",
+    "sell": "卖出",
+    "amount": "金额",
+    "note": "备注",
+    "addTrade": "添加交易",
+    "tradeHistory": "交易记录",
+    "confirmDelete": "确定删除这条交易记录吗？",
+    "costPreview": "金额预览",
+    "clickToAddTrade": "点击图表可快速添加交易",
+    "profitSummary": "盈亏汇总",
+    "totalCost": "总成本",
+    "currentValue": "当前价值",
+    "profitLoss": "盈亏",
+    "returnRate": "收益率",
+    "holdingAmount": "持有数量",
+    "avgCostRate": "平均成本",
+    "errors": {
+      "requiredFields": "请填写金额和汇率",
+      "invalidAmount": "请输入有效的金额",
+      "invalidRate": "请输入有效的汇率",
+      "createFailed": "创建失败"
+    },
+    "guide": {
+      "title": "使用说明",
+      "step1": "选择要监控的货币对，数据来源为招商银行实时汇率",
+      "step2": "图表支持 7/30/90 天走势查看，可开启自动刷新",
+      "step3": "点击图表或「添加交易」记录买入/卖出，自动计算盈亏",
+      "step4": "设置汇率预警，达到目标时浏览器会推送通知",
+      "step5": "未登录时数据仅保存在本地，登录后数据将同步至云端永久保存"
+    },
+    "alerts": {
+      "title": "汇率预警",
+      "noAlerts": "暂无预警规则",
+      "confirmDelete": "确定删除这条预警规则吗？",
+      "invalidThreshold": "请输入有效的阈值",
+      "rateAbove": "汇率高于 {{value}}",
+      "rateBelow": "汇率低于 {{value}}",
+      "changeAbove": "日涨跌超过 {{value}}%",
+      "currentRateHint": "当前汇率：{{rate}}",
+      "ratePlaceholder": "输入目标汇率",
+      "percentPlaceholder": "输入百分比，如 5",
+      "hint": "刷新汇率时将检查预警条件",
+      "conditions": {
+        "rate_above": "汇率高于",
+        "rate_below": "汇率低于",
+        "daily_change_above": "日涨跌超"
+      }
+    },
+    "export": {
+      "csv": "导出 CSV",
+      "noData": "暂无数据可导出"
+    },
+    "calculator": {
+      "title": "汇率计算器",
+      "from": "金额",
+      "to": "换算为",
+      "swap": "切换货币",
+      "midRateHint": "使用中间价计算，实际兑换以银行报价为准"
+    },
+    "notification": {
+      "enable": "预警通知",
+      "enabled": "已开启",
+      "disabled": "已关闭",
+      "request": "开启通知",
+      "notSupported": "当前浏览器不支持通知功能",
+      "alertTitle": "汇率预警",
+      "currentRate": "当前汇率"
+    },
+    "currencies": {
+      "JPY_CNY": "JPY/CNY",
+      "USD_CNY": "USD/CNY",
+      "EUR_CNY": "EUR/CNY",
+      "GBP_CNY": "GBP/CNY",
+      "HKD_CNY": "HKD/CNY",
+      "AUD_CNY": "AUD/CNY",
+      "CAD_CNY": "CAD/CNY",
+      "SGD_CNY": "SGD/CNY",
+      "CHF_CNY": "CHF/CNY",
+      "NZD_CNY": "NZD/CNY"
+    }
+  }
+}

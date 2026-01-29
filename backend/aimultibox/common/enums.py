@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+"""通用枚举定义"""
+
+from enum import Enum
+
+
+class ErrorCode(str, Enum):
+    """统一错误码"""
+
+    # 通用
+    INTERNAL_ERROR = "INTERNAL_ERROR"
+    UNKNOWN_ERROR = "UNKNOWN_ERROR"
+
+    # HTTP / 鉴权
+    BAD_REQUEST = "BAD_REQUEST"
+    UNAUTHORIZED = "UNAUTHORIZED"
+    FORBIDDEN = "FORBIDDEN"
+    NOT_FOUND = "NOT_FOUND"
+    METHOD_NOT_ALLOWED = "METHOD_NOT_ALLOWED"
+
+    # 校验
+    VALIDATION_ERROR = "VALIDATION_ERROR"
+    RESPONSE_VALIDATION_ERROR = "RESPONSE_VALIDATION_ERROR"
+
+    # 限流
+    RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED"

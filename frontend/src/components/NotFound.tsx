@@ -29,12 +29,12 @@ export default function NotFound() {
 
         {/* 标题 */}
         <h1 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-          {t('notFound.title')}
+          {t('errors.notFound.title')}
         </h1>
 
         {/* 描述 */}
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
-          {t('notFound.description')}
+          {t('errors.notFound.description')}
         </p>
 
         {/* 按钮组 */}
@@ -44,21 +44,21 @@ export default function NotFound() {
             className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            {t('notFound.back')}
+            {t('errors.notFound.back')}
           </button>
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
           >
             <Home className="w-4 h-4" />
-            {t('notFound.home')}
+            {t('errors.notFound.home')}
           </button>
         </div>
 
         {/* 推荐页面 */}
         <div className="text-center">
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
-            {t('notFound.orVisit')}
+            {t('errors.notFound.orVisit')}
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             {suggestions.map((item) => (
@@ -77,12 +77,12 @@ export default function NotFound() {
       {/* 底部信息 */}
       <div className="pb-6 flex flex-col items-center gap-2">
         <p className="text-xs text-gray-400 dark:text-gray-500">
-          {t('notFound.visitPath')}: <code className="text-gray-500 dark:text-gray-400">{location.pathname}</code>
+          {t('errors.notFound.visitPath')}: <code className="text-gray-500 dark:text-gray-400">{location.pathname}</code>
         </p>
         <div className="flex items-center gap-1">
           <a
             href="mailto:tanghaotian.cn@gmail.com?subject=AIMultiBox Page Issue"
-            title={t('notFound.feedback')}
+            title={t('errors.notFound.feedback')}
             className="flex items-center justify-center w-7 h-7 rounded-md text-gray-400 dark:text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
           >
             <Mail className="w-3.5 h-3.5" />

@@ -1,0 +1,69 @@
+{
+  "watermark": {
+    "title": "AI ウォーターマーク除去",
+    "subtitle": "LaMa モデルをローカルで使用",
+    "subtitleCloud": "SDXL Inpainting をクラウドで使用",
+    "modelReady": "モデル準備完了",
+    "modelNotLoaded": "モデル未読込",
+    "lamaLocal": "LaMa ローカル",
+    "sdxlCloud": "SDXL クラウド",
+    "modes": {
+      "manual": "手動",
+      "manualShort": "手動",
+      "auto": "自動検出",
+      "autoShort": "自動"
+    },
+    "markArea": "ウォーターマーク領域をマーク",
+    "clickToChange": "クリックで変更",
+    "changeImage": "画像を変更",
+    "reselect": "再選択",
+    "removeWatermark": "ウォーターマーク除去",
+    "result": "結果",
+    "resultPlaceholder": "処理後の画像がここに表示されます",
+    "successMsg": "ウォーターマーク除去完了！",
+    "continueProcess": "続行",
+    "downloadImage": "ダウンロード",
+    "upload": {
+      "hint": "画像をドラッグまたはクリックしてアップロード",
+      "formats": "JPG、PNG、WebP 対応"
+    },
+    "canvas": {
+      "brush": "ブラシ",
+      "eraser": "消しゴム",
+      "clear": "クリア",
+      "hint": "ウォーターマークの領域を塗りつぶしてください。精度が高いほど結果が良くなります。"
+    },
+    "warnings": {
+      "lamaNotLoaded": "LaMa モデル未読込",
+      "lamaDownloadHint": "モデルをダウンロードしてください",
+      "sdxlNotConfigured": "SDXL API 未設定",
+      "sdxlConfigHint": "backend/.env に REPLICATE_API_TOKEN を設定",
+      "needMask": "先にウォーターマーク領域を塗ってください",
+      "autoDetectNote": "自動検出の精度には限界があります、手動マーキング推奨"
+    },
+    "reuseHint": "他のモードに画像があります、再利用しますか？",
+    "reuseYes": "再利用",
+    "reuseNo": "いいえ",
+    "syncHint": "他のモードで画像が更新されました、同期しますか？",
+    "syncYes": "同期",
+    "syncNo": "保持",
+    "guide": {
+      "title": "ガイド",
+      "step1": "画像をアップロード",
+      "step2": "推奨：「手動」モードでウォーターマーク領域を塗る",
+      "step3": "正確に塗るほど良い結果",
+      "step4": "「ウォーターマーク除去」をクリックして処理",
+      "step5": "スライダーでビフォー/アフターを比較"
+    },
+    "history": {
+      "title": "履歴",
+      "clear": "クリア",
+      "maxHint": "最大 {{max}} 件",
+      "original": "元画像",
+      "result": "結果",
+      "justNow": "たった今",
+      "minutesAgo": "{{count}}分前",
+      "hoursAgo": "{{count}}時間前"
+    }
+  }
+}

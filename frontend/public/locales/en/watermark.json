@@ -1,0 +1,69 @@
+{
+  "watermark": {
+    "title": "AI Watermark Removal",
+    "subtitle": "Using LaMa model locally",
+    "subtitleCloud": "Using SDXL Inpainting cloud",
+    "modelReady": "Model ready",
+    "modelNotLoaded": "Model not loaded",
+    "lamaLocal": "LaMa Local",
+    "sdxlCloud": "SDXL Cloud",
+    "modes": {
+      "manual": "Manual",
+      "manualShort": "Manual",
+      "auto": "Auto Detect",
+      "autoShort": "Auto"
+    },
+    "markArea": "Mark watermark area",
+    "clickToChange": "Click to change",
+    "changeImage": "Change image",
+    "reselect": "Reselect",
+    "removeWatermark": "Remove Watermark",
+    "result": "Result",
+    "resultPlaceholder": "Processed image will appear here",
+    "successMsg": "Watermark removed!",
+    "continueProcess": "Continue",
+    "downloadImage": "Download",
+    "upload": {
+      "hint": "Drag image here or click to upload",
+      "formats": "Supports JPG, PNG, WebP"
+    },
+    "canvas": {
+      "brush": "Brush",
+      "eraser": "Eraser",
+      "clear": "Clear",
+      "hint": "Paint watermark area, more accurate = better result"
+    },
+    "warnings": {
+      "lamaNotLoaded": "LaMa model not loaded",
+      "lamaDownloadHint": "Please download model to",
+      "sdxlNotConfigured": "SDXL API not configured",
+      "sdxlConfigHint": "Set REPLICATE_API_TOKEN in backend/.env",
+      "needMask": "Please paint watermark area first",
+      "autoDetectNote": "Auto detection has limited accuracy, manual marking recommended"
+    },
+    "reuseHint": "Image found in other mode, reuse it?",
+    "reuseYes": "Reuse",
+    "reuseNo": "No",
+    "syncHint": "Image updated in other mode, sync it?",
+    "syncYes": "Sync",
+    "syncNo": "Keep",
+    "guide": {
+      "title": "Guide",
+      "step1": "Upload the image",
+      "step2": "Recommended: Use \"Manual\" mode, paint watermark area",
+      "step3": "More accurate painting = better result",
+      "step4": "Click \"Remove Watermark\" to process",
+      "step5": "Drag slider to compare before/after"
+    },
+    "history": {
+      "title": "History",
+      "clear": "Clear",
+      "maxHint": "Max {{max}} items",
+      "original": "Ori",
+      "result": "Res",
+      "justNow": "Just now",
+      "minutesAgo": "{{count}}m ago",
+      "hoursAgo": "{{count}}h ago"
+    }
+  }
+}

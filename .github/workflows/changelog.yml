@@ -1,0 +1,36 @@
+name: Build Changelog JSON
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'changelog/CHANGELOG.*.md'
+      - 'scripts/build-changelog.mjs'
+  workflow_dispatch: { }
+
+jobs:
+  build-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate changelog.json
+        run: node scripts/build-changelog.mjs
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git status --porcelain | grep -q "frontend/public/changelog/"; then
+            git add frontend/public/changelog
+            git commit -m "chore: update changelog json" -m "Co-Authored-By: tanghaotian.cn@gmail.com"
+            git push
+          else
+            echo "No changes to commit."
+          fi

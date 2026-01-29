@@ -1,12 +1,9 @@
 /**
  * 水印去除 API
  */
-import api from '@/api'
-
+import { apiClient as api } from '@/config/api'
 /** 水印去除结果 */
 export interface WatermarkRemovalResult {
-  status: string
-  message?: string
   image_base64?: string
 }
 
@@ -21,7 +18,6 @@ export interface WatermarkRegion {
 
 /** 检测结果 */
 export interface DetectionResult {
-  status: string
   regions: WatermarkRegion[]
   count: number
 }
@@ -49,7 +45,7 @@ export interface ToolInfo {
 
 /** 获取工具信息 */
 export async function getToolInfo(): Promise<ToolInfo> {
-  const response = await api.get('/tools/watermark-removal/')
+  const response = await api.get<ToolInfo>('/tools/watermark-removal/')
   return response.data
 }
 
@@ -69,7 +65,6 @@ export async function removeWatermark(
     formData,
     { headers: { 'Content-Type': 'multipart/form-data' } }
   )
-  
   return response.data
 }
 
@@ -85,7 +80,6 @@ export async function removeWatermarkAuto(
     formData,
     { headers: { 'Content-Type': 'multipart/form-data' } }
   )
-  
   return response.data
 }
 
@@ -99,13 +93,12 @@ export async function detectWatermark(imageFile: File): Promise<DetectionResult>
     formData,
     { headers: { 'Content-Type': 'multipart/form-data' } }
   )
-  
   return response.data
 }
 
 /** 获取模型状态 */
 export async function getModelStatus(): Promise<ModelStatus> {
-  const response = await api.get('/tools/watermark-removal/status')
+  const response = await api.get<ModelStatus>('/tools/watermark-removal/status')
   return response.data
 }
 

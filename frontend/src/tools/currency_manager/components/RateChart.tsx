@@ -1,12 +1,13 @@
 /**
  * 汇率图表组件
  */
-import { useMemo, useRef, useCallback } from 'react'
+import { useMemo, useCallback, lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-import ReactECharts from 'echarts-for-react'
 import type { ECharts } from 'echarts'
 import type { RateHistory, TradeRecord } from '../api'
-import { formatDate } from '../utils/format'
+import { formatDateTime } from '@/utils/datetime'
+
+const ReactECharts = lazy(() => import('echarts-for-react'))
 
 /** zrender 事件参数 */
 interface ZrClickEvent {
@@ -30,7 +31,6 @@ interface Props {
 
 export default function RateChart({ history, trades = [], loading, onPointClick, darkMode = false }: Props) {
   const { t } = useTranslation()
-  const chartRef = useRef<ReactECharts>(null)
 
   // 图表实例就绪后绑定 zrender 点击事件
   const onChartReady = useCallback((instance: ECharts) => {
@@ -55,7 +55,7 @@ export default function RateChart({ history, trades = [], loading, onPointClick,
   const chartData = useMemo(() => {
     if (!history.length) return { times: [], rates: [], buyMarks: [], sellMarks: [] }
 
-    const times = history.map(h => formatDate(h.timestamp))
+    const times = history.map(h => formatDateTime(h.timestamp, { format: 'short' }))
     const rates = history.map(h => h.rate)
 
     // 交易标记点
@@ -230,13 +230,18 @@ export default function RateChart({ history, trades = [], loading, onPointClick,
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-3 sm:p-4">
-      <ReactECharts
-        ref={chartRef}
-        option={option}
-        className="h-60 sm:h-80"
-        onChartReady={onChartReady}
-        opts={{ renderer: 'svg' }}
-      />
+      <Suspense fallback={
+        <div className="h-60 sm:h-80 flex items-center justify-center text-gray-400 dark:text-gray-500">
+          {t('common.loading')}
+        </div>
+      }>
+        <ReactECharts
+          option={option}
+          className="h-60 sm:h-80"
+          onChartReady={onChartReady}
+          opts={{ renderer: 'svg' }}
+        />
+      </Suspense>
       {onPointClick && (
         <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-2">
           {t('currency.clickToAddTrade')}

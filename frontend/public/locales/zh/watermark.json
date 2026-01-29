@@ -1,0 +1,69 @@
+{
+  "watermark": {
+    "title": "AI 去水印",
+    "subtitle": "使用 LaMa 模型本地推理",
+    "subtitleCloud": "使用 SDXL Inpainting 云端处理",
+    "modelReady": "模型已就绪",
+    "modelNotLoaded": "模型未加载",
+    "lamaLocal": "LaMa 本地",
+    "sdxlCloud": "SDXL 云端",
+    "modes": {
+      "manual": "手动标注",
+      "manualShort": "手动",
+      "auto": "自动检测",
+      "autoShort": "自动"
+    },
+    "markArea": "标记水印区域",
+    "clickToChange": "点击更换图片",
+    "changeImage": "更换图片",
+    "reselect": "重新选择",
+    "removeWatermark": "去除水印",
+    "result": "处理结果",
+    "resultPlaceholder": "处理后的图片将显示在这里",
+    "successMsg": "水印去除成功！",
+    "continueProcess": "继续处理",
+    "downloadImage": "下载图片",
+    "upload": {
+      "hint": "拖拽图片到这里，或点击上传",
+      "formats": "支持 JPG、PNG、WebP 等格式"
+    },
+    "canvas": {
+      "brush": "画笔",
+      "eraser": "橡皮擦",
+      "clear": "清空",
+      "hint": "涂抹水印区域，涂得越准确效果越好"
+    },
+    "warnings": {
+      "lamaNotLoaded": "LaMa 模型未加载",
+      "lamaDownloadHint": "请下载模型放到",
+      "sdxlNotConfigured": "SDXL API 未配置",
+      "sdxlConfigHint": "请在 backend/.env 中设置 REPLICATE_API_TOKEN",
+      "needMask": "请先用画笔涂抹水印区域",
+      "autoDetectNote": "自动检测准确率有限，建议使用手动标注获得最佳效果"
+    },
+    "reuseHint": "检测到另一模式有图片，是否复用？",
+    "reuseYes": "复用",
+    "reuseNo": "不用",
+    "syncHint": "另一模式图片已更新，是否同步？",
+    "syncYes": "同步",
+    "syncNo": "保留",
+    "guide": {
+      "title": "使用说明",
+      "step1": "上传需要处理的图片",
+      "step2": "推荐：使用「手动标注」模式，用画笔涂抹水印区域",
+      "step3": "涂抹越精确，去除效果越好",
+      "step4": "点击「去除水印」开始处理",
+      "step5": "处理完成后可拖动滑块对比效果"
+    },
+    "history": {
+      "title": "处理历史",
+      "clear": "清空",
+      "maxHint": "最多保留 {{max}} 条",
+      "original": "原",
+      "result": "后",
+      "justNow": "刚刚",
+      "minutesAgo": "{{count}} 分钟前",
+      "hoursAgo": "{{count}} 小时前"
+    }
+  }
+}

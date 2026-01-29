@@ -1,33 +1,31 @@
 /**
  * 汇率管家 - API 封装
  */
-import api from '@/api'
+import { apiClient as api } from '@/config/api'
 
 const BASE_URL = '/tools/currency-manager'
 
-// ========== 类型定义 ==========
-
 export interface RateData {
   currency_pair: string
-  rate: number              // 中间价
-  rtb_bid: number           // 现汇买入价（银行买入你的现汇）
-  rth_bid: number           // 现钞买入价（银行买入你的现钞）
-  rtc_ofr: number           // 现汇卖出价（银行卖给你现汇）
-  rth_ofr: number           // 现钞卖出价（银行卖给你现钞）
-  timestamp: string         // ISO 时间戳
-  time_str?: string         // 原始时间字符串（如 "2025年12月19日 14:18:42"）
+  rate: number
+  rtb_bid: number
+  rth_bid: number
+  rtc_ofr: number
+  rth_ofr: number
+  timestamp: string  // UTC ISO 8601
+  time_str?: string
 }
 
 export interface RateHistory {
   id: number
   currency_pair: string
-  rate: number              // 中间价
-  rtb_bid: number           // 现汇买入价
-  rth_bid: number           // 现钞买入价
-  rtc_ofr: number           // 现汇卖出价
-  rth_ofr: number           // 现钞卖出价
-  timestamp: string
-  time_str?: string         // 原始时间字符串
+  rate: number
+  rtb_bid: number
+  rth_bid: number
+  rtc_ofr: number
+  rth_ofr: number
+  timestamp: string  // UTC ISO 8601
+  time_str?: string
 }
 
 export interface RateStats {
@@ -37,9 +35,9 @@ export interface RateStats {
   low: number
   average: number
   change: number
-  updated_at: string
-  streak_days: number    // 连涨/连跌天数（正=涨，负=跌）
-  streak_change: number  // 连续期间累计涨跌幅(%)
+  updated_at: string  // UTC ISO 8601
+  streak_days: number
+  streak_change: number
 }
 
 export interface TradeRecord {
@@ -99,15 +97,33 @@ export interface CurrencyInfo {
   name: string
 }
 
-export interface RefreshConfig {
-  /** 默认刷新间隔（秒） */
-  default_interval: number
-  /** 最小刷新间隔（秒） */
-  min_interval: number
-  /** 最大刷新间隔（秒） */
-  max_interval: number
-  /** 缓存有效期（秒） */
-  cache_ttl: number
+export interface SchedulerStatus {
+  enabled: boolean
+  running: boolean
+  interval: number
+  next_refresh_time?: string
+  consecutive_failures?: number
+}
+
+export interface RatesResponse {
+  rates: RateData[]
+  scheduler: SchedulerStatus
+}
+
+export interface HistoryResponse {
+  currency_pair: string
+  days: number
+  history: RateHistory[]
+  stats: RateStats | null
+}
+
+export interface SummaryResponse {
+  rates: RateData[]
+  scheduler: SchedulerStatus
+  history: RateHistory[]
+  stats: RateStats | null
+  profit: ProfitSummary | null
+  trades: TradeRecord[]
 }
 
 export interface ToolInfo {
@@ -117,76 +133,42 @@ export interface ToolInfo {
   icon: string
   version: string
   supported_currencies: CurrencyInfo[]
-  refresh_config: RefreshConfig
 }
-
-// ========== API 方法 ==========
 
 /** 获取工具信息 */
 export async function getToolInfo(): Promise<ToolInfo> {
-  const response = await api.get(`${BASE_URL}/`)
+  const response = await api.get<ToolInfo>(`${BASE_URL}/`)
   return response.data
 }
 
-/** 触发的预警 */
-export interface TriggeredAlert {
-  alert_id: number
-  condition: string
-  threshold: number
-  current_rate: number
-  currency_pair: string
-}
-
-/** 汇率响应 */
-export interface RatesResponse {
-  data: RateData[]
-  source: string
-  /** 数据更新时间 */
-  update_time?: string
-  /** 触发的预警 */
-  triggered_alerts?: TriggeredAlert[]
-}
-
-/** 获取当前汇率列表 */
+/** 获取当前汇率（轻量接口） */
 export async function getRates(force = false): Promise<RatesResponse> {
-  const response = await api.get(`${BASE_URL}/rates`, { params: { force } })
+  const params: Record<string, boolean> = {}
+  if (force) params.force = true
+  const response = await api.get<RatesResponse>(`${BASE_URL}/rates`, { params })
   return response.data
 }
 
-/** 手动刷新汇率 */
-export async function refreshRates(): Promise<RatesResponse> {
-  const response = await api.post(`${BASE_URL}/rates/refresh`)
+/** 获取汇率历史和统计 */
+export async function getHistory(currencyPair: string, days = 7): Promise<HistoryResponse> {
+  const response = await api.get<HistoryResponse>(`${BASE_URL}/history`, {
+    params: { currency_pair: currencyPair, days },
+  })
   return response.data
 }
 
-/** 获取单个货币对汇率 */
-export async function getRate(currencyPair: string): Promise<{ data: RateData }> {
-  const response = await api.get(`${BASE_URL}/rates/${currencyPair}`)
-  return response.data
-}
-
-/** 获取汇率历史 */
-export async function getRateHistory(currencyPair: string, days = 7): Promise<{ data: RateHistory[], total: number }> {
-  const response = await api.get(`${BASE_URL}/rates/${currencyPair}/history`, { params: { days } })
-  return response.data
-}
-
-/** 获取汇率统计 */
-export async function getRateStats(currencyPair: string, days = 7): Promise<{ data: RateStats }> {
-  const response = await api.get(`${BASE_URL}/rates/${currencyPair}/stats`, { params: { days } })
+/** 获取汇总数据（首次加载用） */
+export async function getSummary(currencyPair: string, days = 7): Promise<SummaryResponse> {
+  const response = await api.get<SummaryResponse>(`${BASE_URL}/summary`, {
+    params: { currency_pair: currencyPair, days },
+  })
   return response.data
 }
 
 /** 创建交易记录 */
 export async function createTrade(data: TradeCreate): Promise<{ data: TradeRecord }> {
-  const response = await api.post(`${BASE_URL}/trades`, data)
-  return response.data
-}
-
-/** 获取交易列表 */
-export async function getTrades(currencyPair: string, type?: 'buy' | 'sell', limit = 100, offset = 0): Promise<{ data: TradeRecord[], total: number }> {
-  const response = await api.get(`${BASE_URL}/trades`, { params: { currency_pair: currencyPair, type, limit, offset } })
-  return response.data
+  const response = await api.post<TradeRecord>(`${BASE_URL}/trades`, data)
+  return { data: response.data }
 }
 
 /** 删除交易记录 */
@@ -194,21 +176,15 @@ export async function deleteTrade(tradeId: number): Promise<void> {
   await api.delete(`${BASE_URL}/trades/${tradeId}`)
 }
 
-/** 获取盈亏汇总 */
-export async function getProfit(currencyPair: string): Promise<{ summary: ProfitSummary, trades: TradeRecord[] }> {
-  const response = await api.get(`${BASE_URL}/profit/${currencyPair}`)
-  return response.data
-}
-
 /** 创建预警规则 */
 export async function createAlert(data: AlertCreate): Promise<{ data: AlertRule }> {
-  const response = await api.post(`${BASE_URL}/alerts`, data)
-  return response.data
+  const response = await api.post<AlertRule>(`${BASE_URL}/alerts`, data)
+  return { data: response.data }
 }
 
 /** 获取预警规则列表 */
-export async function getAlerts(currencyPair?: string): Promise<{ data: AlertRule[], total: number }> {
-  const response = await api.get(`${BASE_URL}/alerts`, { params: { currency_pair: currencyPair } })
+export async function getAlerts(currencyPair?: string): Promise<{ items: AlertRule[]; total: number }> {
+  const response = await api.get<{ items: AlertRule[]; total: number }>(`${BASE_URL}/alerts`, { params: { currency_pair: currencyPair } })
   return response.data
 }
 
@@ -220,4 +196,16 @@ export async function updateAlert(alertId: number, data: Partial<AlertCreate>): 
 /** 删除预警规则 */
 export async function deleteAlert(alertId: number): Promise<void> {
   await api.delete(`${BASE_URL}/alerts/${alertId}`)
+}
+
+/** 导出交易记录 CSV */
+export async function exportTradesCsv(currencyPair: string): Promise<{ blob: Blob; filename: string }> {
+  const response = await api.get(`${BASE_URL}/export/trades`, {
+    params: { currency_pair: currencyPair },
+    responseType: 'blob',
+  })
+  const disposition = response.headers?.['content-disposition'] || ''
+  const filenameMatch = /filename=([^;]+)/i.exec(disposition)
+  const filename = filenameMatch?.[1]?.trim() || `trades_${currencyPair}.csv`
+  return { blob: response.data, filename }
 }

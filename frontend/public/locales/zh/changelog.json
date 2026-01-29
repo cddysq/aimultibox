@@ -1,0 +1,14 @@
+{
+  "changelog": {
+    "title": "更新日志",
+    "subtitle": "记录每一次成长与蜕变",
+    "empty": "暂无更新记录",
+    "latest": "最新",
+    "beginning": "故事从这里开始...",
+    "types": {
+      "feature": "新功能",
+      "improve": "优化",
+      "fix": "修复"
+    }
+  }
+}

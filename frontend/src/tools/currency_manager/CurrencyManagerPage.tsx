@@ -16,8 +16,8 @@ import {
   Bell,
 } from 'lucide-react'
 import { useCurrencyData } from './hooks/useCurrencyData'
-import { TIME_RANGES, REFRESH_INTERVALS, type TimeRange } from './utils/constants'
-import { formatCountdown } from './utils/format'
+import { TIME_RANGES, type TimeRange } from './utils/constants'
+import { formatDateTime } from '@/utils/datetime'
 import RateChart from './components/RateChart'
 import RateStats from './components/RateStats'
 import ProfitSummary from './components/ProfitSummary'
@@ -26,7 +26,6 @@ import TradeModal from './components/TradeModal'
 import AlertConfig from './components/AlertConfig'
 import Calculator from './components/Calculator'
 import CurrencySelect, { type CurrencyOption } from './components/CurrencySelect'
-
 export default function CurrencyManagerPage() {
   const { t, i18n } = useTranslation()
 
@@ -42,15 +41,16 @@ export default function CurrencyManagerPage() {
     profitSummary,
     trades,
     currentRate,
-    currentRateTime,
+    dataSourceUpdateTime,
     isDarkMode,
     loading,
     refreshing,
     error,
+    schedulerStatus,
     autoRefresh,
     notification,
     refresh,
-    loadData,
+    loadSummary,
   } = useCurrencyData()
 
   const [showSettings, setShowSettings] = useState(false)
@@ -117,17 +117,12 @@ export default function CurrencyManagerPage() {
 
         {/* 右侧按钮组 */}
         <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-          {/* 更新时间 + 倒计时 */}
+          {/* 下次刷新时间 */}
           <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-            {currentRateTime && (
+            {autoRefresh.enabled && autoRefresh.nextRefreshTime && (
               <span className="flex items-center space-x-1">
                 <Clock className="w-3.5 h-3.5" />
-                <span>{currentRateTime}</span>
-              </span>
-            )}
-            {autoRefresh.enabled && (
-              <span className="text-primary-600 dark:text-primary-400 font-mono">
-                ({formatCountdown(autoRefresh.countdown)})
+                <span>{t('currency.nextRefresh')} {formatDateTime(autoRefresh.nextRefreshTime, { format: 'time' })}</span>
               </span>
             )}
           </div>
@@ -168,25 +163,6 @@ export default function CurrencyManagerPage() {
                   </button>
                 </label>
 
-                {/* 刷新间隔选择 */}
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {t('currency.refreshInterval')}
-                  </span>
-                  <select
-                    value={autoRefresh.interval}
-                    onChange={(e) => autoRefresh.setInterval(parseInt(e.target.value))}
-                    disabled={!autoRefresh.enabled}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white disabled:opacity-50"
-                  >
-                    {REFRESH_INTERVALS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {t(`currency.intervals.${opt.labelKey}`)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
                 {/* 通知权限 */}
                 <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-600">
                   <div className="flex items-center justify-between">
@@ -194,10 +170,28 @@ export default function CurrencyManagerPage() {
                       {t('currency.notification.enable')}
                     </span>
                     {notification.isGranted ? (
-                      <span className="flex items-center space-x-1 text-xs text-green-600 dark:text-green-400">
-                        <Bell className="w-3.5 h-3.5" />
-                        <span>{t('currency.notification.enabled')}</span>
-                      </span>
+                      <div className="flex items-center space-x-2">
+                        <span className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
+                          <Bell className="w-3.5 h-3.5" />
+                          <span>
+                            {notification.enabled
+                              ? t('currency.notification.enabled')
+                              : t('currency.notification.disabled')}
+                          </span>
+                        </span>
+                        <button
+                          onClick={notification.toggleEnabled}
+                          className={`w-10 h-5 rounded-full transition-colors ${
+                            notification.enabled ? 'bg-primary-500' : 'bg-gray-300 dark:bg-slate-600'
+                          }`}
+                        >
+                          <span
+                            className={`block w-4 h-4 bg-white rounded-full shadow transform transition-transform ${
+                              notification.enabled ? 'translate-x-5' : 'translate-x-0.5'
+                            }`}
+                          />
+                        </button>
+                      </div>
                     ) : (
                       <button
                         onClick={notification.requestPermission}
@@ -209,11 +203,14 @@ export default function CurrencyManagerPage() {
                   </div>
                 </div>
 
-                {/* 移动端显示更新时间 */}
-                <div className="sm:hidden mt-3 pt-3 border-t border-gray-200 dark:border-slate-600">
-                  {currentRateTime && (
+                {/* 后端调度器状态 */}
+                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-600 space-y-1">
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    {t('currency.backendInterval')}: {schedulerStatus?.interval ?? '-'}{t('currency.seconds')}
+                  </div>
+                  {dataSourceUpdateTime && (
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {t('currency.lastUpdate')}: {currentRateTime}
+                      {t('currency.lastUpdate')}: {dataSourceUpdateTime}
                     </div>
                   )}
                 </div>
@@ -305,7 +302,7 @@ export default function CurrencyManagerPage() {
             <TradeList
               trades={trades}
               loading={loading}
-              onRefresh={loadData}
+              onRefresh={loadSummary}
               currencyPair={currencyPair}
             />
           </div>
@@ -330,6 +327,7 @@ export default function CurrencyManagerPage() {
           <li>{t('currency.guide.step2')}</li>
           <li>{t('currency.guide.step3')}</li>
           <li>{t('currency.guide.step4')}</li>
+          <li>{t('currency.guide.step5')}</li>
         </ol>
       </div>
 
@@ -337,7 +335,7 @@ export default function CurrencyManagerPage() {
       <TradeModal
         isOpen={tradeModalOpen}
         onClose={() => setTradeModalOpen(false)}
-        onSuccess={() => loadData()}
+        onSuccess={() => loadSummary()}
         currencyPair={currencyPair}
         prefillRate={prefillRate}
         prefillTimestamp={prefillTimestamp}

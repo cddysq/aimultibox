@@ -1,11 +1,11 @@
 /**
  * 首页 - 工具列表
  */
-import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router'
 import { Eraser, Sparkles, Image, Loader2, AlertCircle, Wand2, FileImage, Scissors, Type, TrendingUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useToolsStore } from '@/stores'
+import { getTools } from '@/api'
 import type { Tool } from '@/stores'
 
 /** 工具图标映射 */
@@ -21,12 +21,16 @@ const iconMap: Record<string, React.ReactNode> = {
 }
 
 export default function HomePage() {
-  const { tools, isLoading, error, fetchTools } = useToolsStore()
   const { t } = useTranslation()
+  const toolsQuery = useQuery({
+    queryKey: ['tools', 'list'],
+    queryFn: getTools,
+    staleTime: 5 * 60_000,
+  })
 
-  useEffect(() => {
-    fetchTools()
-  }, [fetchTools])
+  const tools = toolsQuery.data?.tools || []
+  const isLoading = toolsQuery.isLoading
+  const error = toolsQuery.isError
 
   return (
     <div className="flex-1 flex flex-col">
@@ -34,13 +38,13 @@ export default function HomePage() {
       <div className="text-center space-y-4">
         <div className="inline-flex items-center space-x-2 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-medium">
           <Sparkles className="w-4 h-4" />
-          <span>{t('home.tagline')}</span>
+          <span>{t('common.home.tagline')}</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
-          {t('home.title')}
+          {t('common.home.title')}
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          {t('home.description')}
+          {t('common.home.description')}
         </p>
       </div>
 
@@ -57,7 +61,7 @@ export default function HomePage() {
           <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
           <p className="text-red-700 dark:text-red-400">{t('errors.loadToolsFailed')}</p>
           <button
-            onClick={fetchTools}
+            onClick={() => toolsQuery.refetch()}
             className="ml-auto text-red-600 dark:text-red-400 hover:underline text-sm"
           >
             {t('common.retry')}
@@ -78,24 +82,24 @@ export default function HomePage() {
       {!isLoading && !error && tools.length === 0 && (
         <div className="text-center py-12 text-gray-500 dark:text-gray-400">
           <Wand2 className="w-16 h-16 mx-auto mb-4 opacity-50" />
-          <p>{t('home.noTools')}</p>
-          <p className="text-sm mt-2">{t('home.noToolsHint')}</p>
+          <p>{t('common.home.noTools')}</p>
+          <p className="text-sm mt-2">{t('common.home.noToolsHint')}</p>
         </div>
       )}
 
       {/* 特性介绍 */}
       <div className="mt-auto pt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
         <FeatureCard
-          title={t('home.features.plugin.title')}
-          description={t('home.features.plugin.desc')}
+          title={t('common.home.features.plugin.title')}
+          description={t('common.home.features.plugin.desc')}
         />
         <FeatureCard
-          title={t('home.features.deploy.title')}
-          description={t('home.features.deploy.desc')}
+          title={t('common.home.features.deploy.title')}
+          description={t('common.home.features.deploy.desc')}
         />
         <FeatureCard
-          title={t('home.features.model.title')}
-          description={t('home.features.model.desc')}
+          title={t('common.home.features.model.title')}
+          description={t('common.home.features.model.desc')}
         />
       </div>
     </div>
@@ -104,13 +108,11 @@ export default function HomePage() {
 
 /** 工具卡片 */
 function ToolCard({ tool }: { tool: Tool }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const icon = (tool.icon && iconMap[tool.icon]) || iconMap.default
   const toolPath = `/tools/${tool.id}`
-
-  const isZh = i18n.language === 'zh'
-  const name = isZh ? tool.name : t(`tools.${tool.id}.name`, { defaultValue: tool.name })
-  const description = isZh ? tool.description : t(`tools.${tool.id}.description`, { defaultValue: tool.description })
+  const name = t(`common.tools.${tool.id}.name`, { defaultValue: tool.name })
+  const description = t(`common.tools.${tool.id}.description`, { defaultValue: tool.description })
   return (
     <Link to={toolPath}>
       <div className="tool-card group">

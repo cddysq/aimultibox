@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import { History, Trash2, ChevronDown, ChevronUp, X, ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useHistoryStore } from '@/stores'
+import { useToolHistoryStore } from '@/stores'
 import type { HistoryItem } from '@/stores'
 
 interface HistoryPanelProps {
@@ -16,7 +16,7 @@ const MAX_HISTORY = 10
 
 export default function HistoryPanel({ toolId, onSelect }: HistoryPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { history, removeHistory, clearHistory } = useHistoryStore()
+  const { history, removeHistory, clearHistory } = useToolHistoryStore()
   const { t } = useTranslation()
   
   const toolHistory = history.filter(item => item.toolId === toolId)
@@ -27,9 +27,9 @@ export default function HistoryPanel({ toolId, onSelect }: HistoryPanelProps) {
     const now = new Date()
     const diff = now.getTime() - timestamp
     
-    if (diff < 60000) return t('history.justNow')
-    if (diff < 3600000) return t('history.minutesAgo', { count: Math.floor(diff / 60000) })
-    if (diff < 86400000) return t('history.hoursAgo', { count: Math.floor(diff / 3600000) })
+    if (diff < 60000) return t('watermark.history.justNow')
+    if (diff < 3600000) return t('watermark.history.minutesAgo', { count: Math.floor(diff / 60000) })
+    if (diff < 86400000) return t('watermark.history.hoursAgo', { count: Math.floor(diff / 3600000) })
     return new Date(timestamp).toLocaleDateString()
   }
 
@@ -42,7 +42,7 @@ export default function HistoryPanel({ toolId, onSelect }: HistoryPanelProps) {
       >
         <div className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
           <History className="w-4 h-4" />
-          <span className="font-medium">{t('history.title')}</span>
+          <span className="font-medium">{t('watermark.history.title')}</span>
           <span className="text-xs text-gray-500 dark:text-gray-400">
             ({toolHistory.length}/{MAX_HISTORY})
           </span>
@@ -55,14 +55,14 @@ export default function HistoryPanel({ toolId, onSelect }: HistoryPanelProps) {
           {/* 操作栏 */}
           <div className="px-4 py-2 flex items-center justify-between border-b border-gray-100 dark:border-slate-700">
             <span className="text-xs text-gray-400 dark:text-gray-500">
-              {t('history.maxHint', { max: MAX_HISTORY })}
+              {t('watermark.history.maxHint', { max: MAX_HISTORY })}
             </span>
             <button
               onClick={() => clearHistory()}
               className="text-xs text-red-500 hover:text-red-600 flex items-center space-x-1"
             >
               <Trash2 className="w-3 h-3" />
-              <span>{t('history.clear')}</span>
+              <span>{t('watermark.history.clear')}</span>
             </button>
           </div>
 
@@ -85,7 +85,7 @@ export default function HistoryPanel({ toolId, onSelect }: HistoryPanelProps) {
                         className="w-12 h-12 object-cover rounded border border-gray-200 dark:border-slate-600"
                       />
                       <span className="absolute -bottom-1 -right-1 px-1 text-[10px] bg-gray-600 text-white rounded">
-                        {t('history.original')}
+                        {t('watermark.history.original')}
                       </span>
                     </div>
                     <ArrowRight className="w-3 h-3 text-gray-400" />
@@ -96,7 +96,7 @@ export default function HistoryPanel({ toolId, onSelect }: HistoryPanelProps) {
                         className="w-12 h-12 object-cover rounded border-2 border-green-400 dark:border-green-500"
                       />
                       <span className="absolute -bottom-1 -right-1 px-1 text-[10px] bg-green-500 text-white rounded">
-                        {t('history.result')}
+                        {t('watermark.history.result')}
                       </span>
                     </div>
                   </div>

@@ -4,9 +4,10 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Trash2, TrendingUp, TrendingDown, ChevronLeft, ChevronRight, Download } from 'lucide-react'
-import { deleteTrade, type TradeRecord } from '../api'
+import { deleteTrade, exportTradesCsv, type TradeRecord } from '../api'
 import { ConfirmModal } from '@/components'
-import { formatDate, formatMoney } from '../utils/format'
+import { formatMoney } from '../utils/format'
+import { formatDateTime } from '@/utils/datetime'
 import { TRADES_PAGE_SIZE } from '../utils/constants'
 
 interface Props {
@@ -20,6 +21,7 @@ export default function TradeList({ trades, loading, onRefresh, currencyPair }: 
   const { t } = useTranslation()
   const [deletingId, setDeletingId] = useState<number | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [exporting, setExporting] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: number | null }>({
     open: false,
     id: null,
@@ -33,6 +35,26 @@ export default function TradeList({ trades, loading, onRefresh, currencyPair }: 
 
   const handleDelete = (id: number) => {
     setDeleteConfirm({ open: true, id })
+  }
+
+  const handleExport = async () => {
+    if (exporting) return
+    setExporting(true)
+    try {
+      const { blob, filename } = await exportTradesCsv(currencyPair)
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Export failed:', err)
+    } finally {
+      setExporting(false)
+    }
   }
   
   const confirmDelete = async () => {
@@ -109,7 +131,7 @@ export default function TradeList({ trades, loading, onRefresh, currencyPair }: 
                       </span>
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      @ {trade.rate.toFixed(4)} · {formatDate(trade.timestamp)}
+                      @ {trade.rate.toFixed(4)} · {formatDateTime(trade.timestamp, { format: 'datetime' })}
                     </div>
                   </div>
                 </div>
@@ -182,14 +204,14 @@ export default function TradeList({ trades, loading, onRefresh, currencyPair }: 
         )}
         
         {/* 右侧：导出按钮 */}
-        <a
-          href={`/api/tools/currency-manager/export/trades?currency_pair=${currencyPair}`}
-          download
-          className="flex items-center space-x-1 px-2 py-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded transition-colors"
+        <button
+          onClick={handleExport}
+          disabled={exporting}
+          className="flex items-center space-x-1 px-2 py-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded transition-colors disabled:opacity-50"
         >
           <Download className="w-3.5 h-3.5" />
           <span>{t('currency.export.csv')}</span>
-        </a>
+        </button>
       </div>
       
       {/* 删除确认弹窗 */}

@@ -1,0 +1,42 @@
+{
+  "errors": {
+    "loadToolsFailed": "Failed to load tools",
+    "backendUnavailable": "Backend is unavailable. Please make sure it is running.",
+    "invalidImage": "Please select a valid image",
+    "processingFailed": "Processing failed, check backend",
+    "rateLimited": "Too many requests, please wait",
+    "rateLimitWait": "Retry in {{seconds}}s",
+    "notFound": {
+      "title": "Page Not Found",
+      "description": "The page you're looking for may have been removed or is temporarily unavailable",
+      "back": "Back",
+      "home": "Home",
+      "visitPath": "Path",
+      "orVisit": "Or visit",
+      "feedback": "Report Issue"
+    },
+    "serviceError": {
+      "title": "Service Unavailable",
+      "description": "We're under maintenance, please try again later",
+      "retry": "Retry",
+      "waited": "Waited",
+      "easterEgg": "Easter egg unlocked! You found the secret!",
+      "duration": {
+        "days": "d",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s"
+      },
+      "milestone": {
+        "1min": "Take a break",
+        "5min": "Bored? Try ↑↑↓↓←→←→BA",
+        "10min": "Thanks for waiting",
+        "30min": "Have some tea",
+        "1hour": "Maybe do something else?",
+        "6hour": "You're so patient",
+        "12hour": "Persistence is victory",
+        "24hour": "Legendary waiter!"
+      }
+    }
+  }
+}

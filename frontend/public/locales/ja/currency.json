@@ -1,0 +1,113 @@
+{
+  "currency": {
+    "title": "為替マネージャー",
+    "subtitle": "レート監視と損益分析",
+    "refresh": "更新",
+    "selectCurrency": "通貨",
+    "days": "日",
+    "settings": "設定",
+    "refreshSettings": "更新設定",
+    "autoRefresh": "自動更新",
+    "lastUpdate": "データ更新",
+    "rate": "レート",
+    "midRate": "仲値",
+    "rtbBid": "電信買",
+    "rthBid": "現金買",
+    "rtcOfr": "電信売",
+    "rthOfr": "現金売",
+    "sellForeignTitle": "外貨売却（銀行に売る）",
+    "buyForeignTitle": "外貨購入（銀行から買う）",
+    "high": "高値",
+    "low": "安値",
+    "average": "平均",
+    "streak": {
+      "rising": "{{days}}日連続上昇",
+      "falling": "{{days}}日連続下落",
+      "cumulative": "合計"
+    },
+    "noData": "データなし",
+    "noTrades": "取引記録なし",
+    "noProfitData": "取引を追加して損益を確認",
+    "totalRecords": "{{count}}件",
+    "buy": "買い",
+    "sell": "売り",
+    "amount": "金額",
+    "note": "メモ",
+    "addTrade": "取引追加",
+    "tradeHistory": "取引履歴",
+    "confirmDelete": "この取引を削除しますか？",
+    "costPreview": "コストプレビュー",
+    "clickToAddTrade": "チャートをクリックして取引追加",
+    "profitSummary": "損益サマリー",
+    "totalCost": "総コスト",
+    "currentValue": "現在価値",
+    "profitLoss": "損益",
+    "returnRate": "収益率",
+    "holdingAmount": "保有量",
+    "avgCostRate": "平均コスト",
+    "errors": {
+      "requiredFields": "金額とレートが必要",
+      "invalidAmount": "無効な金額",
+      "invalidRate": "無効なレート",
+      "createFailed": "作成失敗"
+    },
+    "guide": {
+      "title": "ガイド",
+      "step1": "通貨ペアを選択、データは招商銀行のリアルタイムレート",
+      "step2": "7/30/90日のトレンドを表示、自動更新を有効化",
+      "step3": "チャートまたは「取引追加」をクリックして記録、損益自動計算",
+      "step4": "レートアラートを設定、目標到達時にブラウザ通知",
+      "step5": "未ログイン時はローカル保存のみ、ログインでクラウドに同期・永久保存"
+    },
+    "alerts": {
+      "title": "レートアラート",
+      "noAlerts": "アラートルールなし",
+      "confirmDelete": "このアラートを削除しますか？",
+      "invalidThreshold": "有効なしきい値を入力してください",
+      "rateAbove": "レートが {{value}} 以上",
+      "rateBelow": "レートが {{value}} 以下",
+      "changeAbove": "日次変動 > {{value}}%",
+      "currentRateHint": "現在のレート：{{rate}}",
+      "ratePlaceholder": "目標レート",
+      "percentPlaceholder": "パーセント（例：5）",
+      "hint": "レート更新時にアラート条件を確認します",
+      "conditions": {
+        "rate_above": "レートが上回る",
+        "rate_below": "レートが下回る",
+        "daily_change_above": "日次変動 >"
+      }
+    },
+    "export": {
+      "csv": "CSV エクスポート",
+      "noData": "エクスポートするデータなし"
+    },
+    "calculator": {
+      "title": "計算機",
+      "from": "金額",
+      "to": "換算先",
+      "swap": "入れ替え",
+      "midRateHint": "仲値で計算します。実際のレートは異なる場合があります"
+    },
+    "notification": {
+      "enable": "アラート通知",
+      "enabled": "有効",
+      "disabled": "無効",
+      "request": "有効にする",
+      "notSupported": "ブラウザが通知をサポートしていません",
+      "alertTitle": "レートアラート",
+      "currentRate": "現在のレート"
+    },
+    "currencies": {
+      "JPY_CNY": "JPY/CNY",
+      "USD_CNY": "USD/CNY",
+      "EUR_CNY": "EUR/CNY",
+      "GBP_CNY": "GBP/CNY",
+      "HKD_CNY": "HKD/CNY",
+      "AUD_CNY": "AUD/CNY",
+      "CAD_CNY": "CAD/CNY",
+      "SGD_CNY": "SGD/CNY",
+      "CHF_CNY": "CHF/CNY",
+      "NZD_CNY": "NZD/CNY"
+    }
+  }
+}

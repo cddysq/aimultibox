@@ -4,22 +4,24 @@
  * - 初始化 API
  * - 渲染应用或错误页面
  */
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import App from './App'
-import { initApi } from './api'
-import './locales'
+import { initApi } from './config'
+import './config/i18n'
 import './styles/index.css'
+import { queryClient, queryPersister } from './config'
+import { cacheUtils } from '@/utils/cache'
 
 /** 初始化主题 */
 const initTheme = () => {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
   try {
-    const stored = localStorage.getItem('aimultibox-theme')
+    const stored = cacheUtils.local.getJson<{ state?: { theme?: string } }>('aimultibox-theme')
     if (stored) {
-      const { state } = JSON.parse(stored) as { state?: { theme?: string } }
+      const { state } = stored
       const theme = state?.theme ?? 'system'
       if (theme === 'dark' || (theme === 'system' && prefersDark)) {
         document.documentElement.classList.add('dark')
@@ -39,6 +41,8 @@ initTheme()
 const rootElement = document.getElementById('root')
 if (!rootElement) throw new Error('Root element not found')
 const root = createRoot(rootElement)
+let outageIntervalId: number | null = null
+let outageKeydownHandler: ((e: KeyboardEvent) => void) | null = null
 
 /**
  * 渲染服务不可用页面
@@ -47,7 +51,7 @@ function renderError(_message: string) {
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
   // 获取当前语言
-  const locale = localStorage.getItem('aimultibox-locale') || 'zh'
+  const locale = cacheUtils.local.getOrSet('aimultibox-locale', () => 'zh')
   const isEn = locale === 'en'
 
   // 国际化文案
@@ -87,11 +91,7 @@ function renderError(_message: string) {
 
   // 记录服务不可用开始时间
   const STORAGE_KEY = 'aimultibox_outage_start'
-  let startTime = localStorage.getItem(STORAGE_KEY)
-  if (!startTime) {
-    startTime = Date.now().toString()
-    localStorage.setItem(STORAGE_KEY, startTime)
-  }
+  const startTime = cacheUtils.local.getOrSet(STORAGE_KEY, () => Date.now().toString())
 
   /** 格式化等待时间为可读字符串 */
   function formatDuration(ms: number): string {
@@ -313,7 +313,10 @@ function renderError(_message: string) {
   }
 
   updateDuration()
-  setInterval(updateDuration, 1000)
+  if (outageIntervalId !== null) {
+    clearInterval(outageIntervalId)
+  }
+  outageIntervalId = window.setInterval(updateDuration, 1000)
 
   // Konami 秘籍彩蛋：↑↑↓↓←→←→BA
   const KONAMI_CODE = [
@@ -323,7 +326,10 @@ function renderError(_message: string) {
   ]
   let konamiIndex = 0
 
-  document.addEventListener('keydown', async (e) => {
+  if (outageKeydownHandler) {
+    document.removeEventListener('keydown', outageKeydownHandler)
+  }
+  outageKeydownHandler = async (e: KeyboardEvent) => {
     if (e.code === KONAMI_CODE[konamiIndex]) {
       konamiIndex++
 
@@ -350,24 +356,28 @@ function renderError(_message: string) {
     } else {
       konamiIndex = 0
     }
-  })
+  }
+  document.addEventListener('keydown', outageKeydownHandler)
 }
 
 /** 渲染主应用 */
 function renderApp() {
   root.render(
-    <StrictMode>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister: queryPersister, maxAge: 24 * 60 * 60 * 1000 }}
+    >
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </StrictMode>,
+    </PersistQueryClientProvider>,
   )
 }
 
 // 启动应用
 initApi()
   .then(() => {
-    localStorage.removeItem('aimultibox_outage_start')
+    cacheUtils.local.remove('aimultibox_outage_start')
     renderApp()
   })
   .catch((error) => {

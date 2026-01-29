@@ -1,0 +1,115 @@
+{
+  "currency": {
+    "title": "Currency Manager",
+    "subtitle": "Rate monitoring & P/L analysis",
+    "refresh": "Refresh",
+    "selectCurrency": "Currency",
+    "days": "D",
+    "settings": "Settings",
+    "refreshSettings": "Refresh Settings",
+    "autoRefresh": "Auto Refresh",
+    "nextRefresh": "Next Refresh",
+    "seconds": "s",
+    "lastUpdate": "Source Update",
+    "rate": "Rate",
+    "midRate": "Mid Rate",
+    "rtbBid": "Spot Buy",
+    "rthBid": "Cash Buy",
+    "rtcOfr": "Spot Sell",
+    "rthOfr": "Cash Sell",
+    "sellForeignTitle": "Sell Foreign (You sell to bank)",
+    "buyForeignTitle": "Buy Foreign (You buy from bank)",
+    "high": "High",
+    "low": "Low",
+    "average": "Avg",
+    "streak": {
+      "rising": "Up {{days}} days",
+      "falling": "Down {{days}} days",
+      "cumulative": "Total"
+    },
+    "noData": "No data",
+    "noTrades": "No trades yet",
+    "noProfitData": "Add trades to see P/L",
+    "totalRecords": "{{count}} records",
+    "buy": "Buy",
+    "sell": "Sell",
+    "amount": "Amount",
+    "note": "Note",
+    "addTrade": "Add Trade",
+    "tradeHistory": "Trade History",
+    "confirmDelete": "Delete this trade?",
+    "costPreview": "Cost preview",
+    "clickToAddTrade": "Click chart to add trade",
+    "profitSummary": "P/L Summary",
+    "totalCost": "Total Cost",
+    "currentValue": "Current Value",
+    "profitLoss": "P/L",
+    "returnRate": "Return",
+    "holdingAmount": "Holding",
+    "avgCostRate": "Avg Cost",
+    "errors": {
+      "requiredFields": "Amount and rate required",
+      "invalidAmount": "Invalid amount",
+      "invalidRate": "Invalid rate",
+      "createFailed": "Create failed"
+    },
+    "guide": {
+      "title": "Guide",
+      "step1": "Select currency pair, data from CMB real-time rates",
+      "step2": "View 7/30/90 day trends, enable auto-refresh",
+      "step3": "Click chart or 'Add Trade' to record, auto calculates P/L",
+      "step4": "Set rate alerts, browser will push when target reached",
+      "step5": "Data is stored locally when not logged in; login to sync to cloud permanently"
+    },
+    "alerts": {
+      "title": "Rate Alerts",
+      "noAlerts": "No alert rules",
+      "confirmDelete": "Delete this alert rule?",
+      "invalidThreshold": "Please enter a valid threshold",
+      "rateAbove": "Rate above {{value}}",
+      "rateBelow": "Rate below {{value}}",
+      "changeAbove": "Daily change > {{value}}%",
+      "currentRateHint": "Current rate: {{rate}}",
+      "ratePlaceholder": "Target rate",
+      "percentPlaceholder": "Percentage, e.g. 5",
+      "hint": "Alerts checked on rate refresh",
+      "conditions": {
+        "rate_above": "Rate Above",
+        "rate_below": "Rate Below",
+        "daily_change_above": "Change >"
+      }
+    },
+    "export": {
+      "csv": "Export CSV",
+      "noData": "No data to export"
+    },
+    "calculator": {
+      "title": "Calculator",
+      "from": "Amount",
+      "to": "Converted to",
+      "swap": "Swap",
+      "midRateHint": "Using mid rate, actual exchange rate may vary"
+    },
+    "notification": {
+      "enable": "Alert Notification",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "request": "Enable",
+      "notSupported": "Browser does not support notifications",
+      "alertTitle": "Rate Alert",
+      "currentRate": "Current rate"
+    },
+    "currencies": {
+      "JPY_CNY": "JPY/CNY",
+      "USD_CNY": "USD/CNY",
+      "EUR_CNY": "EUR/CNY",
+      "GBP_CNY": "GBP/CNY",
+      "HKD_CNY": "HKD/CNY",
+      "AUD_CNY": "AUD/CNY",
+      "CAD_CNY": "CAD/CNY",
+      "SGD_CNY": "SGD/CNY",
+      "CHF_CNY": "CHF/CNY",
+      "NZD_CNY": "NZD/CNY"
+    }
+  }
+}

@@ -2,7 +2,8 @@
 import { useTranslation } from 'react-i18next'
 import { TrendingUp, TrendingDown, Clock, Flame, ArrowDownCircle } from 'lucide-react'
 import type { RateStats as RateStatsType, RateData } from '../api'
-import { formatRate, formatChange, formatDate } from '../utils/format'
+import { formatRate, formatChange } from '../utils/format'
+import { formatDateTime } from '@/utils/datetime'
 
 interface Props {
   stats: RateStatsType | null
@@ -48,7 +49,7 @@ export default function RateStats({ stats, currentRateData, loading }: Props) {
         </span>
         <div className="flex items-center text-xs text-gray-400 dark:text-gray-500">
           <Clock className="w-3.5 h-3.5 mr-1" />
-          {currentRateData?.time_str || formatDate(stats.updated_at)}
+          {currentRateData?.time_str || formatDateTime(stats.updated_at, { format: 'short' })}
         </div>
       </div>
 

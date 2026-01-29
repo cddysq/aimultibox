@@ -24,7 +24,7 @@ const COUNTRY_CODE_MAP: Record<string, string> = {
 }
 
 /** 获取国旗 SVG 路径 */
-export const getFlagUrl = (currencyCode: string): string => {
+const getFlagUrl = (currencyCode: string): string => {
   const countryCode = COUNTRY_CODE_MAP[currencyCode] || 'cn'
   return `/flags/${countryCode}.svg`
 }

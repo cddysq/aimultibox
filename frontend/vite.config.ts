@@ -34,6 +34,9 @@ export default defineConfig(({ mode }) => {
               if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
                 return 'vendor'
               }
+              if (id.includes('echarts')) {
+                return 'echarts'
+              }
               if (id.includes('i18next') || id.includes('lucide')) {
                 return 'ui'
               }

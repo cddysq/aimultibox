@@ -2,28 +2,16 @@
  * 共享 API 类型定义
  */
 
-/** API 基础响应 */
-export interface BaseResponse<T = unknown> {
-  status: 'success' | 'error'
-  message?: string
-  data?: T
-}
 
 /** API 错误响应 */
 export interface ErrorResponse {
-  status: 'error'
   error: {
-    type: string
+    code: string
     message: string
     details?: Record<string, unknown>
   }
-  request_id?: string
 }
 
-/** 分页响应 */
-export interface PaginatedResponse<T> extends BaseResponse<T[]> {
-  total: number
-}
 
 /** 应用信息 */
 export interface AppInfo {
@@ -48,4 +36,17 @@ export interface ToolMeta {
 /** 工具列表响应 */
 export interface ToolsResponse {
   tools: ToolMeta[]
+}
+
+/** 用户信息 */
+export interface AuthUser {
+  id: string
+  name?: string
+  email?: string
+  avatar_url?: string
+}
+
+/** 认证状态响应 */
+export interface AuthMeResponse {
+  user: AuthUser | null
 }

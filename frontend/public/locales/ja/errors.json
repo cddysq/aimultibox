@@ -1,0 +1,42 @@
+{
+  "errors": {
+    "loadToolsFailed": "ツール読込失敗",
+    "backendUnavailable": "バックエンドが利用できません。起動しているか確認してください。",
+    "invalidImage": "有効な画像を選択してください",
+    "processingFailed": "処理失敗、バックエンドを確認",
+    "rateLimited": "リクエストが多すぎます、お待ちください",
+    "rateLimitWait": "{{seconds}}秒後に再試行",
+    "notFound": {
+      "title": "ページが見つかりません",
+      "description": "お探しのページは削除されたか、一時的に利用できません",
+      "back": "戻る",
+      "home": "ホーム",
+      "visitPath": "パス",
+      "orVisit": "または",
+      "feedback": "問題を報告"
+    },
+    "serviceError": {
+      "title": "サービス利用不可",
+      "description": "メンテナンス中です。後ほどお試しください",
+      "retry": "再試行",
+      "waited": "経過時間",
+      "easterEgg": "イースターエッグ解除！秘密を見つけました！",
+      "duration": {
+        "days": "日",
+        "hours": "時間",
+        "minutes": "分",
+        "seconds": "秒"
+      },
+      "milestone": {
+        "1min": "休憩しましょう",
+        "5min": "退屈？↑↑↓↓←→←→BA を試して",
+        "10min": "お待たせしました",
+        "30min": "お茶でも",
+        "1hour": "他のことをしませんか？",
+        "6hour": "とても忍耐強いですね",
+        "12hour": "継続は力なり",
+        "24hour": "伝説の待機者！"
+      }
+    }
+  }
+}

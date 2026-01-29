@@ -5,15 +5,15 @@ import { Outlet, Link } from 'react-router'
 import { Box, Github, Menu, X, Sun, Moon, Monitor, Languages, GitBranch } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useThemeStore } from '@/stores'
-import { SUPPORTED_LANGS } from '@/locales'
+import { usePrefsStore } from '@/stores'
+import { SUPPORTED_LANGS } from '@/config'
 import LanguageSuggestionBanner from './LanguageSuggestionBanner'
-
+import UserMenu from './UserMenu'
 export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [themeMenuOpen, setThemeMenuOpen] = useState(false)
   const [langMenuOpen, setLangMenuOpen] = useState(false)
-  const { theme, setTheme, resolvedTheme } = useThemeStore()
+  const { theme, setTheme, resolvedTheme } = usePrefsStore()
   const { t, i18n } = useTranslation()
   const themeMenuRef = useRef<HTMLDivElement>(null)
   const langMenuRef = useRef<HTMLDivElement>(null)
@@ -33,14 +33,14 @@ export default function Layout() {
   }, [])
 
   const themeOptions = [
-    { id: 'light' as const, name: t('layout.theme.light'), icon: Sun },
-    { id: 'dark' as const, name: t('layout.theme.dark'), icon: Moon },
-    { id: 'system' as const, name: t('layout.theme.system'), icon: Monitor },
+    { id: 'light' as const, name: t('common.layout.theme.light'), icon: Sun },
+    { id: 'dark' as const, name: t('common.layout.theme.dark'), icon: Moon },
+    { id: 'system' as const, name: t('common.layout.theme.system'), icon: Monitor },
   ]
 
   const langOptions = SUPPORTED_LANGS.map(id => ({
     id,
-    name: t(`langSuggestion.langs.${id}`),
+    name: t(`common.langSuggestion.langs.${id}`),
   }))
 
   const CurrentThemeIcon = resolvedTheme === 'dark' ? Moon : Sun
@@ -74,7 +74,9 @@ export default function Layout() {
                   className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex items-center space-x-1"
                 >
                   <Languages className="w-5 h-5" />
-                  <span className="text-sm">{t(`langSuggestion.langShort.${i18n.language}`)}</span>
+                  <span className="text-sm">
+                    {t(`common.langSuggestion.langShort.${i18n.language}`, { defaultValue: i18n.language.toUpperCase() })}
+                  </span>
                 </button>
                 
                 {langMenuOpen && (
@@ -127,14 +129,8 @@ export default function Layout() {
                 )}
               </div>
 
-              <a 
-                href="https://github.com/cddysq/aimultibox" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                <Github className="w-5 h-5" />
-              </a>
+              {/* 用户菜单 */}
+              <UserMenu />
             </div>
 
             {/* 移动端按钮 */}
@@ -170,8 +166,12 @@ export default function Layout() {
                 className="block px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t('layout.toolbox')}
+                {t('common.layout.toolbox')}
               </Link>
+              {/* 移动端用户菜单 */}
+              <div className="border-t border-gray-100 dark:border-slate-700 pt-2 mt-2">
+                <UserMenu mobile onMobileClick={() => setMobileMenuOpen(false)} />
+              </div>
             </div>
           </div>
         )}
@@ -198,7 +198,7 @@ export default function Layout() {
                 className="text-gray-400 dark:text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 text-sm flex items-center space-x-1 transition-colors"
               >
                 <GitBranch className="w-3.5 h-3.5" />
-                <span>{t('layout.changelog')}</span>
+                <span>{t('common.layout.changelog')}</span>
               </Link>
               <a 
                 href="https://github.com/cddysq/aimultibox" 

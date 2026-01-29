@@ -5,21 +5,21 @@ import logging
 from typing import List, Optional
 from datetime import datetime
 
-from .database import get_holding_summary, get_transactions, get_latest_rate
+from .repo import get_holding_summary, get_transactions, get_latest_rate
 from .schemas import ProfitSummary, TradeRecord
 
 logger = logging.getLogger(__name__)
 
 
 def calculate_profit(currency_pair: str, current_rate: Optional[float] = None) -> Optional[ProfitSummary]:
-    """计算盈亏汇总"""
+    """计算盈亏汇总（自动从上下文获取用户范围）"""
     # 获取持仓汇总
     summary = get_holding_summary(currency_pair)
-    
+
     holding = summary["holding"]
     total_buy_cost = summary["total_buy_cost"]
     total_sell_value = summary["total_sell_value"]
-    
+
     # 如果没有持仓，返回空
     if holding <= 0 and total_buy_cost == 0:
         return ProfitSummary(
@@ -32,18 +32,18 @@ def calculate_profit(currency_pair: str, current_rate: Optional[float] = None) -
             avg_cost_rate=0,
             current_rate=current_rate or 0,
         )
-    
+
     # 获取当前汇率
     if current_rate is None:
         latest = get_latest_rate(currency_pair)
         current_rate = latest["rate"] if latest else 0
-    
+
     total_cost = total_buy_cost  # 总成本 = 买入总花费
     current_value = holding * current_rate + total_sell_value  # 持仓市值 + 已卖出收入
     profit_loss = current_value - total_cost
     return_rate = (profit_loss / total_cost * 100) if total_cost > 0 else 0
     avg_cost_rate = (total_buy_cost / summary["total_buy"]) if summary["total_buy"] > 0 else 0
-    
+
     result = ProfitSummary(
         currency_pair=currency_pair,
         total_cost=round(total_cost, 2),
@@ -65,10 +65,10 @@ def calculate_trade_profit(trade: dict, current_rate: float) -> TradeRecord:
     rate = trade["rate"]
     cost_cny = amount * rate
     current_value = amount * current_rate
-    
+
     # 买入: 计算浮动盈亏; 卖出: 已实现，不计算
     profit_loss = (current_value - cost_cny) if trade_type == "buy" else 0
-    
+
     return TradeRecord(
         id=trade["id"],
         type=trade_type,
@@ -91,14 +91,14 @@ def get_trades_with_profit(currency_pair: str, current_rate: Optional[float] = N
     if current_rate is None:
         latest = get_latest_rate(currency_pair)
         current_rate = latest["rate"] if latest else 0
-    
+
     # 获取交易记录
     trades, total = get_transactions(currency_pair, type_filter, limit, offset)
-    
+
     # 计算每笔盈亏
     trade_records = [
         calculate_trade_profit(trade, current_rate)
         for trade in trades
     ]
-    
+
     return trade_records, total
