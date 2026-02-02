@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
 """应用入口"""
 
+import json
 import logging
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
-import json
 
 from aimultibox import APP_META
+from aimultibox.api.routes import router as api_router
 from aimultibox.core.config import settings
 from aimultibox.core.loader import ToolLoader
 from aimultibox.core.middleware import setup_middleware
 from aimultibox.core.ratelimit import setup_ratelimit
-from aimultibox.api.routes import router as api_router
 from aimultibox.schemas import AppConfigResponse
-
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 logger = logging.getLogger("aimultibox")
 
@@ -133,23 +132,27 @@ if FRONTEND_DIR.exists():
     app.mount("/assets", StaticFiles(directory=FRONTEND_DIR / "assets"), name="assets")
     app.mount("/flags", StaticFiles(directory=FRONTEND_DIR / "flags"), name="flags")
     app.mount("/locales", StaticFiles(directory=FRONTEND_DIR / "locales"), name="locales")
-    app.mount("/changelog", StaticFiles(directory=FRONTEND_DIR / "changelog"), name="changelog")
+    app.mount("/data", StaticFiles(directory=FRONTEND_DIR / "data"), name="data")
 
+    # 读取 index.html 内容
+    _index_html = (FRONTEND_DIR / "index.html").read_text(encoding="utf-8")
 
     @app.get("/logo.svg")
     async def serve_logo():
         return FileResponse(FRONTEND_DIR / "logo.svg", media_type="image/svg+xml")
 
-
     @app.get("/changelog.json")
     async def serve_changelog():
-        return FileResponse(FRONTEND_DIR / "changelog" / "zh.json", media_type="application/json")
-
-    # 读取 index.html 内容
-    _index_html = (FRONTEND_DIR / "index.html").read_text(encoding="utf-8")
+        return FileResponse(FRONTEND_DIR / "data" / "changelog" / "zh.json", media_type="application/json")
 
     @app.get("/", response_class=HTMLResponse)
     async def serve_index() -> str:
+        return _index_html
+
+
+    @app.get("/changelog", response_class=HTMLResponse)
+    async def serve_changelog_spa() -> str:
+        """SPA changelog 页面路由"""
         return _index_html
 
     @app.get("/tools/{path:path}", response_class=HTMLResponse)

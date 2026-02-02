@@ -87,7 +87,7 @@ export default function ChangelogPage() {
     itemRefs.current = []
 
     const fetchChangelog = (targetLang: string) =>
-      fetch(`/changelog/${targetLang}.json`).then((res) => res.json())
+      fetch(`/data/changelog/${targetLang}.json`).then((res) => res.json())
     fetchChangelog(resolvedLang)
       .catch(() => {
         if (resolvedLang !== 'zh') {

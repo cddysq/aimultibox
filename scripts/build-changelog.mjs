@@ -12,7 +12,7 @@ import path from 'node:path'
 
 const rootDir = path.resolve(process.cwd())
 const changelogDir = path.join(rootDir, 'changelog')
-const outputDir = path.join(rootDir, 'frontend', 'public', 'changelog')
+const outputDir = path.join(rootDir, 'frontend', 'public', 'data', 'changelog')
 
 const changelogFiles = fs.existsSync(changelogDir)
   ? fs.readdirSync(changelogDir).filter((file) => /^CHANGELOG\.[a-zA-Z-]+\.md$/.test(file))

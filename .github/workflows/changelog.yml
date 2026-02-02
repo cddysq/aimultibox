@@ -27,8 +27,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git status --porcelain | grep -q "frontend/public/changelog/"; then
-            git add frontend/public/changelog
+          if git status --porcelain | grep -q "frontend/public/data/changelog/"; then
+            git add frontend/public/data/changelog
             git commit -m "chore: update changelog json" -m "Co-Authored-By: tanghaotian.cn@gmail.com"
             git push
           else
