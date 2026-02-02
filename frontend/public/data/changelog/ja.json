@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "version": "0.0.3",
+      "date": "2026-01-29",
+      "type": "minor",
+      "title": "v0.0.3",
+      "changes": [
+        {
+          "type": "feature",
+          "text": "アカウントログインとクラウドデータ保存"
+        },
+        {
+          "type": "feature",
+          "text": "為替データのデバイス間自動同期"
+        },
+        {
+          "type": "improve",
+          "text": "サイトアーキテクチャの刷新（性能・安定性・体験の改善）"
+        }
+      ]
+    },
+    {
+      "version": "0.0.2",
+      "date": "2025-12-29",
+      "type": "minor",
+      "title": "v0.0.2",
+      "changes": [
+        {
+          "type": "feature",
+          "text": "為替マネージャー：多通貨監視とトレンドチャート"
+        },
+        {
+          "type": "feature",
+          "text": "取引記録、損益分析、収益率計算"
+        },
+        {
+          "type": "feature",
+          "text": "レートアラート通知"
+        },
+        {
+          "type": "feature",
+          "text": "通貨計算機"
+        },
+        {
+          "type": "improve",
+          "text": "アーキテクチャの改善による高速化"
+        },
+        {
+          "type": "improve",
+          "text": "コード構造の最適化と安定性向上"
+        }
+      ]
+    },
+    {
+      "version": "0.0.1",
+      "date": "2025-12-07",
+      "type": "major",
+      "title": "v0.0.1",
+      "changes": [
+        {
+          "type": "feature",
+          "text": "AI ウォーターマーク除去（手動と自動検出）"
+        },
+        {
+          "type": "feature",
+          "text": "LaMa ローカル推論"
+        },
+        {
+          "type": "feature",
+          "text": "SDXL クラウド Inpainting（任意）"
+        },
+        {
+          "type": "feature",
+          "text": "ダークモードと多言語対応"
+        },
+        {
+          "type": "feature",
+          "text": "履歴と比較ビュー"
+        }
+      ]
+    }
+  ]
+}

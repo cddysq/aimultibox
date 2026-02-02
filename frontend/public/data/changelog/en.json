@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "version": "0.0.3",
+      "date": "2026-01-29",
+      "type": "minor",
+      "title": "v0.0.3",
+      "changes": [
+        {
+          "type": "feature",
+          "text": "New account login and cloud data storage"
+        },
+        {
+          "type": "feature",
+          "text": "Currency data auto-sync across devices"
+        },
+        {
+          "type": "improve",
+          "text": "Website architecture upgrade (performance, stability, and experience)"
+        }
+      ]
+    },
+    {
+      "version": "0.0.2",
+      "date": "2025-12-29",
+      "type": "minor",
+      "title": "v0.0.2",
+      "changes": [
+        {
+          "type": "feature",
+          "text": "Currency Manager: multi-currency monitoring and trend charts"
+        },
+        {
+          "type": "feature",
+          "text": "Trade records, P/L analysis, and return calculation"
+        },
+        {
+          "type": "feature",
+          "text": "Rate alert notifications"
+        },
+        {
+          "type": "feature",
+          "text": "Currency calculator"
+        },
+        {
+          "type": "improve",
+          "text": "Architecture upgrade for faster page responsiveness"
+        },
+        {
+          "type": "improve",
+          "text": "Code structure optimizations and stability improvements"
+        }
+      ]
+    },
+    {
+      "version": "0.0.1",
+      "date": "2025-12-07",
+      "type": "major",
+      "title": "v0.0.1",
+      "changes": [
+        {
+          "type": "feature",
+          "text": "AI Watermark Removal (manual mask and auto detection)"
+        },
+        {
+          "type": "feature",
+          "text": "Local LaMa model inference"
+        },
+        {
+          "type": "feature",
+          "text": "SDXL cloud inpainting (optional)"
+        },
+        {
+          "type": "feature",
+          "text": "Dark mode and multi-language support"
+        },
+        {
+          "type": "feature",
+          "text": "History and before/after comparison"
+        }
+      ]
+    }
+  ]
+}
